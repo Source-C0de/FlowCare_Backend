@@ -1,4 +1,4 @@
-# TestCare (Queue & Appointment Booking System)
+# FlowCare (Queue & Appointment Booking System)
 
 Backend solution for Rihal Codestacker 2026.
 
