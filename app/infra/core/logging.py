@@ -1,24 +1,18 @@
 from __future__ import annotations
 import logging
-from logging.config import dictConfig
+from app.config import settings
 
+def get_logger(name: str):
+    logger = logging.getLogger(name)
+    logger.setLevel(settings.LOG_LEVEL)
 
-def configure_logging(level: str) -> None:
-    dictConfig(
-        {
-            "version": 1,
-            "disable_existing_loggers": False,
-            "formatters": {
-                "default": {"format": "%(levelname)s %(name)s %(message)s"},
-            },
-            "handlers": {
-                "console": {
-                    "class": "logging.StreamHandler",
-                    "formatter": "default",
-                }
-            },
-            "root": {"handlers": ["console"], "level": level},
-        }
-
+    handler = logging.StreamHandler()
+    formatter = logging.Formatter(
+        "%(asctime)s | %(levelname)s | %(name)s | %(message)s"
     )
-    logging.getLogger("uvicorn.error").propagate = True
+    handler.setFormatter(formatter)
+
+    if not logger.handlers:
+        logger.addHandler(handler)
+
+    return logger
