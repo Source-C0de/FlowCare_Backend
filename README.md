@@ -31,12 +31,11 @@ API:
 - Docs at `/docs`
 
 ## Dev setup (without Docker)
-
 ```bash
 python -m venv .venv
 source .venv/bin/activate
-pip install -r requirements-dev.txt
-uvicorn app.main:create_app --factory --reload
+pip install -r requirements.txt
+uvicorn app.main:app --factory --reload
 ```
 
 ## Migrations
