@@ -16,6 +16,9 @@ class Settings(BaseSettings):
     DB_USER: str
     DB_PASSWORD: str
     LOG_LEVEL: str = "INFO"
+    
+    
+    DEBUG: bool = True
 
     @property
     def DATABASE_URL(self) -> str:

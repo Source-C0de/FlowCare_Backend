@@ -1,6 +1,9 @@
-from fastapi import APIRouter, Depends, UploadFile, File, HTTPException, status
+from fastapi import APIRouter, Depends, UploadFile, File, HTTPException, status, Form
+from sqlalchemy.ext.asyncio import AsyncSession
 from fastapi.security import HTTPBasicCredentials
 
+
+from app.infra.db.session import get_db
 # # from app.infra.core import (
 # #     get_user_repo, get_storage, get_current_user, security
 # # )
@@ -12,13 +15,39 @@ from fastapi.security import HTTPBasicCredentials
 # # from app.infra.core.security import verify_password
 # # from app.infrastructure.storage import StorageService
 # # from app.application.use_cases.auth import RegisterCustomerUseCase
-# from app.application.dtos import CustomerRegisterDTO
+from app.infra.db.session import get_db
+from app.infra.models.customer import Customer
+from app.application.dtos import CustomerRegisterDTO
 # # from app.domain.entities import User
 
 
 
 router = APIRouter(prefix="/auth", tags=["Authentication"])
 
+
+@router.post("/register", response_model=CustomerRegisterDTO, status_code= 201)
+async def register(
+    fullname: str = Form(...),
+    email: str = Form(...),
+    password: str = Form(...),
+    phone: str = Form(None),
+    db: AsyncSession = Depends(get_db),
+):
+    existing = await db.execute(select(Customer).where(Customer.email == email))
+    if existing.scalar_one_or_none():
+        raise HTTPException(status_code=400, detail="Email already registered")
+
+    image_path = await save_id_image(id_image)
+    customer = Customer(
+        name=name,
+        email=email,
+        password_hash=hash_password(password),
+        phone=phone,
+        id_image_path=image_path,
+    )
+    db.add(customer)
+    await db.flush()
+    return customer
 # # @router.post("register", response_model=CustomerRegisterDTO)
 # # async def register(
 # #     email: str,
