@@ -16,38 +16,61 @@ from app.infra.db.session import get_db
 # # from app.infrastructure.storage import StorageService
 # # from app.application.use_cases.auth import RegisterCustomerUseCase
 from app.infra.db.session import get_db
-from app.infra.models.customer import Customer
-from app.application.dtos import CustomerRegisterDTO
-# # from app.domain.entities import User
+from app.infra.models.users import User
+from app.api.v1.schemas.user_schema import (
+    CreateUserRequest,
+    CreateUserResponse
+)
+from app.application.dtos import (
+    CustomerRegisterDTO
+)
 
+from app.domain.repository.user_repo import UserRepository
+from app.application.use_cases import (
+    auth
+)
+# # from app.domain.entities import User
 
 
 router = APIRouter(prefix="/auth", tags=["Authentication"])
 
 
-@router.post("/register", response_model=CustomerRegisterDTO, status_code= 201)
-async def register(
-    fullname: str = Form(...),
-    email: str = Form(...),
-    password: str = Form(...),
-    phone: str = Form(None),
-    db: AsyncSession = Depends(get_db),
-):
-    existing = await db.execute(select(Customer).where(Customer.email == email))
-    if existing.scalar_one_or_none():
-        raise HTTPException(status_code=400, detail="Email already registered")
+@router.post("/register", status_code=201)
+async def register(request: CreateUserRequest):
+    #DTO
+    dto = CustomerRegisterDTO(
+        name=request.name,
+        email=request.email,
+        password=request.password,
+        phone=""
 
-    image_path = await save_id_image(id_image)
-    customer = Customer(
-        name=name,
-        email=email,
-        password_hash=hash_password(password),
-        phone=phone,
-        id_image_path=image_path,
     )
-    db.add(customer)
-    await db.flush()
-    return customer
+    print(dto)
+    user = auth.RegisterUserUserCase.excute(dto)
+
+    return user
+
+
+
+
+    #Use_Case
+    # existing = await db.execute(select(Customer).where(Customer.email == email))
+    # if existing.scalar_one_or_none():
+    #     raise HTTPException(status_code=400, detail="Email already registered")
+
+    # image_path = await save_id_image(id_image)
+    # customer = Customer(
+    #     name=name,
+    #     email=email,
+    #     password_hash=hash_password(password),
+    #     phone=phone,
+    #     id_image_path=image_path,
+    # )
+    # db.add(customer)
+    # await db.flush()
+
+
+
 # # @router.post("register", response_model=CustomerRegisterDTO)
 # # async def register(
 # #     email: str,
@@ -75,3 +98,11 @@ async def register(
 # #         user_id=user.id, email=user.email, full_name=user.full_name,
 # #         role=user.role, branch_id=user.branch_id
 # #     )
+
+
+# @router.post("/login", status_code=201)
+# async def login(
+#     email:str,
+#     password:str
+# ):
+#     return {"message": "Customer login successfully"}

@@ -1,10 +1,11 @@
 import uuid
 from datetime import datetime, timezone
-
-
 from sqlalchemy import UUID, Column, DateTime
 from sqlalchemy.ext.declarative import declared_attr
+
 from sqlalchemy.orm import DeclarativeBase
+
+
 class Base(DeclarativeBase):
     id = Column(
         UUID(as_uuid=True),
@@ -28,11 +29,10 @@ class Base(DeclarativeBase):
         nullable=False,
     )
 
-
     @declared_attr
-    def __tablename__(cls) ->str:
+    def __tablename__(cls) -> str:
         return cls.__name__.lower()
-    
+
     def to_dict(self) -> dict:
         """Convert model to dictionary"""
         return {

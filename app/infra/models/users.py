@@ -1,18 +1,16 @@
-
-from sqlalchemy import Column, Integer, String, DateTime, func
+import uuid 
+from sqlalchemy import Column, ForeignKey, String, func, Boolean
 from sqlalchemy.orm import relationship
-from app.infra.db import Base
+from app.infra.db.base import Base
+from sqlalchemy.dialects.postgresql import UUID
 
 
-class Customer(Base):
-    __table__name = "customers"
-    id = Column(Integer, primary_key=True, index=True)
+class User(Base):
+    __tablename__ = "users"
     name = Column(String(200), nullable=False)
     email = Column(String(200), unique=True, nullable=False, index=True)
     password_hash = Column(String(500), nullable=False)
     phone = Column(String(30), nullable=True)
+    role_id = Column(UUID(as_uuid=True), ForeignKey("roles.id"), nullable=False)
     id_image_path = Column(String(500), nullable=False)
-    created_at = Column(DateTime(timezone=True), server_default=func.now())
-    updated_at = Column(DateTime(timezone=True), onupdate=func.now())
-
-    appointments = relationship("Appointment", back_populates="customer")
+    is_active = Column(Boolean, default=True, nullable=False)
