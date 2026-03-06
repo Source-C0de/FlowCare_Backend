@@ -53,26 +53,6 @@ async def register(request: CreateUserRequest):
     )
 
 
-
-
-    #Use_Case
-    # existing = await db.execute(select(Customer).where(Customer.email == email))
-    # if existing.scalar_one_or_none():
-    #     raise HTTPException(status_code=400, detail="Email already registered")
-
-    # image_path = await save_id_image(id_image)
-    # customer = Customer(
-    #     name=name,
-    #     email=email,
-    #     password_hash=hash_password(password),
-    #     phone=phone,
-    #     id_image_path=image_path,
-    # )
-    # db.add(customer)
-    # await db.flush()
-
-
-
 # # @router.post("register", response_model=CustomerRegisterDTO)
 # # async def register(
 # #     email: str,

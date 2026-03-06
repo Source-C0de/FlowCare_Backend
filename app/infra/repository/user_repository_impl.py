@@ -5,20 +5,30 @@ from app.domain.entities.users import User
 from app.domain.repository.user_repo import UserRepository
 from app.infra.db.session import AsyncSessionLocal
 from app.infra.models.users import User as UserModel
+from sqlalchemy.exc import IntegrityError
+from app.config import Settings
 
 
 class UserRepositoryImpl(UserRepository):
     async def save_user(self, user: User) -> None:
-        async with AsyncSessionLocal() as session:
-            model = UserModel(
-                name=user.name,
-                email=user.email,
-                password_hash=user.hashed_password,
-                role_id=1,
-                phone=user.phone,
-            )
-            session.add(model)
-            await session.commit()
+        try:
+            async with AsyncSessionLocal() as session:
+                model = UserModel(
+                    name=user.name,
+                    email=user.email,
+                    password_hash=user.hashed_password,
+                    role_id=Settings.CUSTOMER,
+                    phone=user.phone,
+                )
+                session.add(model)
+                await session.commit()
+                return {"success": True, "message": "Customer created successfully", "data": model}
+        except IntegrityError:
+            await session.rollback()
+            return {"success": False, "message": "Database integrity error"}
+        except Exception as e:
+            await session.rollback()
+            return {"success": False, "message": f"Internal server error: {str(e)}"}
 
     async def find_by_email(self, email: str) -> User | None:
         async with AsyncSessionLocal() as session:

@@ -1,4 +1,7 @@
 
+import asyncio
+from tabnanny import check
+
 from fastapi import FastAPI
 
 from app.config import get_settings
@@ -14,7 +17,8 @@ def project_init() -> FastAPI:
 
     settings = get_settings()
     get_logger(settings.LOG_LEVEL)
-    check_db_connection()
+    # run async DB connectivity check before app start
+    # asyncio.run(check_db_connection())
 
     app = FastAPI(
         title="Queue & Appointment API",

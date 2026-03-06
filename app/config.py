@@ -20,6 +20,12 @@ class Settings(BaseSettings):
     
     DEBUG: bool = True
 
+
+    ADMIN: 1
+    STAFF: 2
+    CUSTOMER: 3
+    BRANCH_MANAGER: 4
+
     @property
     def DATABASE_URL(self) -> str:
         return (
