@@ -9,7 +9,7 @@ class CreateUserRequest(BaseModel):
     phone: Optional[str]
 
 
-class CreateUserResponse(BaseModel):
+class UserRegisterResponse(BaseModel):
     id: str
     name: str
     email: str

@@ -19,7 +19,7 @@ from app.infra.db.session import get_db
 from app.infra.models.users import User
 from app.api.v1.schemas.user_schema import (
     CreateUserRequest,
-    CreateUserResponse
+    UserRegisterResponse
 )
 from app.application.dtos import (
     CustomerRegisterDTO
@@ -35,20 +35,22 @@ from app.application.use_cases import (
 router = APIRouter(prefix="/auth", tags=["Authentication"])
 
 
-@router.post("/register", status_code=201)
+@router.post("/register", status_code=201, response_model=UserRegisterResponse)
 async def register(request: CreateUserRequest):
     #DTO
     dto = CustomerRegisterDTO(
         name=request.name,
         email=request.email,
         password=request.password,
-        phone=""
-
+        phone=request.phone,
     )
-    print(dto)
-    user = auth.RegisterUserUserCase.excute(dto)
+    user = await auth.RegisterUserUserCase.excute(dto)
 
-    return user
+    return UserRegisterResponse(
+        id=str(user.id),
+        name=user.name,
+        email=user.email,
+    )
 
 
 

@@ -1,7 +1,7 @@
 .PHONY: install dev lint format type test up down
 
 install:
-	pip install -r requirements.txt
+	./venv/bin/pip install -r requirements.txt
 
 dev:
 	uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
@@ -23,3 +23,20 @@ up:
 
 down:
 	docker compose down -v
+
+
+# Database migration (always use project venv)
+migration:
+	./venv/bin/alembic revision --autogenerate -m "$(msg)"
+
+upgrade:
+	./venv/bin/alembic upgrade head
+
+downgrade:
+	./venv/bin/alembic downgrade -1
+
+history:
+	./venv/bin/alembic history
+
+current:
+	./venv/bin/alembic current
