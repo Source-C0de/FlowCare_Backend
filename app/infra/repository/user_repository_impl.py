@@ -1,4 +1,5 @@
 
+from fastapi import HTTPException
 from sqlalchemy import select
 
 from app.domain.entities.users import User
@@ -17,18 +18,18 @@ class UserRepositoryImpl(UserRepository):
                     name=user.name,
                     email=user.email,
                     password_hash=user.hashed_password,
-                    role_id=Settings.CUSTOMER,
+                    role_id=3,
                     phone=user.phone,
                 )
                 session.add(model)
                 await session.commit()
-                return {"success": True, "message": "Customer created successfully", "data": model}
         except IntegrityError:
+            print("Test")
             await session.rollback()
-            return {"success": False, "message": "Database integrity error"}
         except Exception as e:
             await session.rollback()
-            return {"success": False, "message": f"Internal server error: {str(e)}"}
+            print("Check")
+            raise HTTPException(e)
 
     async def find_by_email(self, email: str) -> User | None:
         async with AsyncSessionLocal() as session:
@@ -46,3 +47,6 @@ class UserRepositoryImpl(UserRepository):
                 name=row.name,
                 hashed_password=row.password_hash,
             )
+
+
+

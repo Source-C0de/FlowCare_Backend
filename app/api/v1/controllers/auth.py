@@ -1,3 +1,4 @@
+from sre_parse import SUCCESS
 from fastapi import APIRouter, Depends, UploadFile, File, HTTPException, status, Form
 from sqlalchemy.ext.asyncio import AsyncSession
 from fastapi.security import HTTPBasicCredentials
@@ -19,8 +20,11 @@ from app.infra.db.session import get_db
 from app.infra.models.users import User
 from app.api.v1.schemas.user_schema import (
     CreateUserRequest,
-    UserRegisterResponse
+    UserRegisterResponse,
+    UserLoginRequest,
+    UserLoginResponse
 )
+
 from app.application.dtos import (
     CustomerRegisterDTO
 )
@@ -44,7 +48,7 @@ async def register(request: CreateUserRequest):
         password=request.password,
         phone=request.phone,
     )
-    user = await auth.RegisterUserUserCase.excute(dto)
+    user = await auth.RegisterUserUseCase.excute(dto)
 
     return UserRegisterResponse(
         id=str(user.id),
@@ -53,38 +57,19 @@ async def register(request: CreateUserRequest):
     )
 
 
-# # @router.post("register", response_model=CustomerRegisterDTO)
-# # async def register(
-# #     email: str,
-# #     password: str,
-# #     full_name: str,
-# #     user_repo: UserRepository = Depends(get_user_repo)
-# #     storage: StorageService = Depends(get_storage)
-# # ):
-    
-    
+@router.post("/login", status_code=201)
+async def login(request: UserLoginRequest):
+    dto = UserLoginRequest(
+        email=request.email,
+        password=request.password
+    )
 
-# # @router.post("/login",response_model=LoginResponseDTO)
-# # async def login(
-# #     credentials: HTTPBasicCredentials = Depends(security),
-# #     user_repo: UserRepository = Depends(get_user_repo)
-# # ):
-# #     if not credentials:
-# #         raise HTTPException(
-# #             status_code=status.HTTP_401_UNAUTHORIZED,
-# #             detail="Credentials required",
-# #             headers={"WWW-Authenticate": "Basic"},
-# #         )
-# #     user = await use_case.execute(credentials.username, credentials.password)
-# #     return LoginResponseDTO(
-# #         user_id=user.id, email=user.email, full_name=user.full_name,
-# #         role=user.role, branch_id=user.branch_id
-# #     )
+    user = await auth.UserLoginUseCase.verify(dto)
+    return UserLoginResponse(
+        status="success",
+        message="successfully login",
+        id=str(user.id),
+        email=user.email
+    )
+        
 
-
-# @router.post("/login", status_code=201)
-# async def login(
-#     email:str,
-#     password:str
-# ):
-#     return {"message": "Customer login successfully"}

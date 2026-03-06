@@ -11,3 +11,10 @@ class CustomerRegisterDTO(BaseModel):
     email: str
     password: str
     phone: Optional[str]
+
+
+
+
+class UserLoginDTO(BaseModel):
+    email: str
+    password: str

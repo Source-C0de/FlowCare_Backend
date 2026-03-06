@@ -4,11 +4,12 @@ from uuid import uuid4
 from fastapi import HTTPException
 
 from app.domain.entities.users import User
-from app.infra.core.security import hash_password
+from app.domain.repository import user_repo
+from app.infra.core.security import hash_password, verify_password
 from app.infra.repository.user_repository_impl import UserRepositoryImpl
 
 
-class RegisterUserUserCase:
+class RegisterUserUseCase:
     @staticmethod
     async def excute(dto):
         user_repo = UserRepositoryImpl()
@@ -32,3 +33,19 @@ class RegisterUserUserCase:
         await user_repo.save_user(user)
 
         return user
+
+
+class UserLoginUseCase:
+    @staticmethod
+    async def verify(dto):
+        user_repo = UserRepositoryImpl()
+        user_info = await user_repo.find_by_email(dto.email)
+
+        if user_info is None:
+            raise HTTPException(status_code=400, detail="Email not found")
+
+        user_verified = verify_password(dto.password, user_info.hashed_password)
+        print(user_verified)
+        if user_verified != True:
+            raise HTTPException(status_code=400, detail="Email & Password Not Match")
+        return user_info
