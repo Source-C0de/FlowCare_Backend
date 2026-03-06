@@ -21,7 +21,6 @@ class RegisterUserUserCase:
             id=uuid4(),
             name=dto.name,
             email=dto.email,
-
             password_hash=hashed_password,
         )
         # Save using repository

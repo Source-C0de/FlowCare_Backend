@@ -1,7 +1,7 @@
 
 from app.domain.entities.users import User
 from app.domain.repository.user_repo import UserRepository
-from app.infra.models.users import UserModel
+from app.infra.models.users import User as UserModel
 from app.infra.db.database import SessionLocal
 
 
@@ -11,10 +11,10 @@ class UserRepositoryImpl(UserRepository):
 
     def save_user(self, user: User):
         model = UserModel(
-
             name=user.name,
             email=user.email,
-            hashed_password=user.hashed_password
+            password_hash=user.hashed_password,
+            phone=user.phone
         )
         self.db.add(model)
         self.db.commit()

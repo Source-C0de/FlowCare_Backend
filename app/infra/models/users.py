@@ -1,4 +1,4 @@
-import uuid 
+
 from sqlalchemy import Column, ForeignKey, String, func, Boolean
 from sqlalchemy.orm import relationship
 from app.infra.db.base import Base
@@ -14,3 +14,5 @@ class User(Base):
     role_id = Column(UUID(as_uuid=True), ForeignKey("roles.id"), nullable=False)
     id_image_path = Column(String(500), nullable=False)
     is_active = Column(Boolean, default=True, nullable=False)
+
+    
