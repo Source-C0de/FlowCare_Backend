@@ -8,7 +8,7 @@ from sqlalchemy.orm import DeclarativeBase
 
 class Base(DeclarativeBase):
     @declared_attr
-    def id(cls):
+    def uuid(cls):
         return Column(
             UUID(as_uuid=True),
             primary_key=True,
