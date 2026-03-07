@@ -7,12 +7,9 @@ from dataclasses import dataclass
 
 #Auth
 class CustomerRegisterDTO(BaseModel):
-    name: str
     email: str
     password: str
     phone: Optional[str]
-
-
 
 
 class UserLoginDTO(BaseModel):

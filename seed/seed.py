@@ -6,21 +6,21 @@ from app.infra.models.roles import Role
 
 
 role_type = [
-    "admin",
-    "branch_manager",
-    "staff",
-    "customer"
+    "ADMIN",
+    "BRANCH_MANAGER",
+    "STAFF",
+    "CUSTOMER"
 ]
 
 
 async def seed_roles():
     async with AsyncSessionLocal() as db:  # AsyncSession
         for role_name in role_type:
-            result = await db.execute(select(Role).where(Role.name == role_name.upper()))
+            result = await db.execute(select(Role).where(Role.role_type == role_name))
             existing_role = result.scalars().first()
 
             if not existing_role:
-                role = Role(name=role_name)
+                role = Role(role_type=role_name)
                 db.add(role)
 
         await db.commit()

@@ -7,7 +7,6 @@ class UserLoginRequest(BaseModel):
     email: str
     password: str 
 class CreateUserRequest(BaseModel):
-    name: str
     email: str
     password: str
     phone: Optional[str]
@@ -22,7 +21,7 @@ class UserLoginResponse(BaseModel):
 
 class UserRegisterResponse(BaseModel):
     id: str
-    name: str
     email: str
+    phone: str
 
 

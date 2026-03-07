@@ -1,5 +1,6 @@
 
-from sqlalchemy import Boolean, Column, ForeignKey, String, func, Integer
+import uuid
+from sqlalchemy import Boolean, Column, ForeignKey, String, func, Integer, UUID
 from sqlalchemy.orm import relationship
 
 
@@ -9,6 +10,14 @@ from app.infra.models.roles import Role # ensure roles table is registered
 
 class User(Base):
     __tablename__ = "users"
+    id = Column(
+        UUID(as_uuid=True),
+        primary_key=True,
+        default=uuid.uuid4,
+        unique=True,
+        index=True,
+        nullable=False,
+    )
     email = Column(String(200), unique=True, nullable=False, index=True)
     password_hash = Column(String(500), nullable=False)
     phone = Column(String(30), nullable=True)
@@ -18,7 +27,7 @@ class User(Base):
 
     customer_profiles = relationship(
         "CustomerProfile",
-        back_populates="users",
+        back_populates="user",
         uselist=False,
         cascade="all, delete-orphan"
     )

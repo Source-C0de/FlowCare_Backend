@@ -21,10 +21,10 @@ class Settings(BaseSettings):
     DEBUG: bool = True
 
     # Role wise define Value
-    ADMIN: 1
-    STAFF: 2
-    CUSTOMER: 3
-    BRANCH_MANAGER: 4
+    ADMIN: int = 1
+    BRANCH_MANAGER: int = 2
+    STAFF: int  = 3
+    CUSTOMER: int = 4
 
     @property
     def DATABASE_URL(self) -> str:

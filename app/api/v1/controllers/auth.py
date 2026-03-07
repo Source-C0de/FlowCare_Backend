@@ -3,19 +3,6 @@ from fastapi import APIRouter, Depends, UploadFile, File, HTTPException, status,
 from sqlalchemy.ext.asyncio import AsyncSession
 from fastapi.security import HTTPBasicCredentials
 
-
-from app.infra.db.session import get_db
-# # from app.infra.core import (
-# #     get_user_repo, get_storage, get_current_user, security
-# # )
-
-# from app.infra.core import (
-#     security
-# )
-# # from app.infra.db.repositories import UserRepository
-# # from app.infra.core.security import verify_password
-# # from app.infrastructure.storage import StorageService
-# # from app.application.use_cases.auth import RegisterCustomerUseCase
 from app.infra.db.session import get_db
 from app.infra.models.users import User
 from app.api.v1.schemas.user_schema import (
@@ -43,17 +30,17 @@ router = APIRouter(prefix="/auth", tags=["Authentication"])
 async def register(request: CreateUserRequest):
     #DTO
     dto = CustomerRegisterDTO(
-        name=request.name,
         email=request.email,
         password=request.password,
         phone=request.phone,
     )
+    print(dto)
     user = await auth.RegisterUserUseCase.excute(dto)
 
     return UserRegisterResponse(
         id=str(user.id),
-        name=user.name,
         email=user.email,
+        phone=user.phone
     )
 
 

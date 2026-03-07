@@ -12,8 +12,12 @@ from app.config import settings
 from app.infra.db.base import Base
 
 # Import models so they are registered on Base.metadata
-from app.infra.models.roles import Role  # noqa: F401
-from app.infra.models.users import User  # noqa: F401
+from app.infra.models import (
+    roles,
+    users,
+    customer_profiles,
+) # noqa: F401
+
 
 
 config = context.config
