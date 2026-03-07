@@ -2,7 +2,10 @@
 import asyncio
 from tabnanny import check
 
-from fastapi import FastAPI
+from fastapi import FastAPI,Request,status
+from fastapi.middleware.cors import CORSMiddleware
+from fastapi.middleware.trustedhost import TrustedHostMiddleware
+
 
 from app.config import get_settings
 
@@ -13,12 +16,23 @@ from app.api.v1.routers import api_router
 from app.api.middleware import add_exception_handlers
 
 
+settings = get_settings()
+
 def project_init() -> FastAPI:
 
-    settings = get_settings()
     get_logger(settings.LOG_LEVEL)
     # run async DB connectivity check before app start
     # asyncio.run(check_db_connection())
+
+
+    # CORS
+    # app.add_middleware(
+    #     CORSMiddleware,
+    #     allow_origins=["*"] if not settings.is_production else [],
+    #     allow_credentials=True,
+    #     allow_methods=['*'],
+    #     allow_headers=['*']
+    # )
 
     app = FastAPI(
         title="Queue & Appointment API",

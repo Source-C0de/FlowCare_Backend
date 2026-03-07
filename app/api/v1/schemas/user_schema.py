@@ -11,8 +11,6 @@ class CreateUserRequest(BaseModel):
     password: str
     phone: Optional[str]
 
-
-
 class UserLoginResponse(BaseModel):
     status: str
     message: str

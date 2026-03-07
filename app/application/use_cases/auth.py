@@ -36,13 +36,26 @@ class UserLoginUseCase:
     @staticmethod
     async def verify(dto):
         user_repo = UserRepositoryImpl()
-        user_info = await user_repo.find_by_email(dto.email)
+        user = await user_repo.find_by_email(dto.email)
 
-        if user_info is None:
-            raise HTTPException(status_code=400, detail="Email not found")
-
+        if not user:
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                details="User Not Found",
+                headers={"WWW-Authenticate": "Basic"},
+            )
+        
         user_verified = verify_password(dto.password, user_info.hashed_password)
-        print(user_verified)
-        if user_verified != True:
-            raise HTTPException(status_code=400, detail="Email & Password Not Match")
-        return user_info
+
+        if not user_verified:
+             raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail="Invalid credentials",
+                headers={"WWW-Authenticate": "Basic"},
+            )
+        if not user.is_active:
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail="Account is inactive",
+            )
+        return user

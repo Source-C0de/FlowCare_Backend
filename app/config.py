@@ -3,12 +3,35 @@ from __future__ import annotations
 from functools import lru_cache
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
+import secrets
+
 
 class Settings(BaseSettings):
     model_config = SettingsConfigDict(
         env_file=".env",
+        env_file_encoding="utf-8",
+        case_sensitive=False,
         extra="ignore",
     )
+
+    # JWT
+    JWT_SECRET_KEY: str = secrets.token_urlsafe(64)
+    JWT_ALGORITHM: str = "HS256"
+    ACCESS_TOKEN_EXPIRE_MINUTES: int = 15
+    REFRESH_TOKEN_EXPIRE_DAYS: int = 7
+
+
+    # COOKIE
+    COOKIE_SECURE: bool = True
+    COOKIE_SAMESITE: str = "strict"
+
+
+
+    # ── Argon2id params ──────────────────────────────────────
+    ARGON2_TIME_COST: int = 3
+    ARGON2_MEMORY_COST: int = 65536           # 64 MB
+    ARGON2_PARALLELISM: int = 4
+
 
     DB_HOST: str
     DB_PORT: int
@@ -33,7 +56,7 @@ class Settings(BaseSettings):
             f"@{self.DB_HOST}:{self.DB_PORT}/{self.DB_NAME}"
         )
 
-
+# Singleton pattern - called hundred of times , init once
 @lru_cache
 def get_settings() -> Settings:
     return Settings()
