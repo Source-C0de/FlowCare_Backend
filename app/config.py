@@ -22,9 +22,11 @@ class Settings(BaseSettings):
 
 
     # COOKIE
-    COOKIE_SECURE: bool = True
+    COOKIE_DOMAIN: str | None = None          # None = same host
+    COOKIE_SECURE: bool = True                # False only for local HTTP dev
     COOKIE_SAMESITE: str = "strict"
-
+    REFRESH_COOKIE_NAME: str = "refresh_token"
+    ACCESS_COOKIE_NAME: str = "access_token"
 
 
     # ── Argon2id params ──────────────────────────────────────

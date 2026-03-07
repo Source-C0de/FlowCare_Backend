@@ -23,10 +23,7 @@ from datetime import datetime, timedelta, timezone
 from typing import Any
 from jose import JWTError, jwt
 
-from app.config import get_settings
-
-
-settings = get_settings()
+from app.config import settings
 
 # Argon2id hasher(Singleton)
 
@@ -83,7 +80,7 @@ def create_access_token(
         "role": role,
         "type": "access",
         "iat": now,
-        "exp": now + timedelta(minitues=settings.ACCESS_TOKEN_EXPIRE_MINUTES),
+        "exp": now + timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES),
         "jti": str(uuid.uuid4())
 
     }
@@ -108,8 +105,14 @@ def create_refresh_token(
         "exp": now + timedelta(days=settings.REFRESH_TOKEN_EXPIRE_DAYS),
         "jti": str(uuid.uuid4()),
     }
-    return jwt.encond(payload, _SECRET, algorithm=_ALG),  fid
+    return jwt.encode(payload, _SECRET, algorithm=_ALG),  fid
 
 
 def decode_token(token: str) -> dict[str, Any]:
     return jwt.decode(token, _SECRET, algorithm=_ALG)
+
+
+# Token Hashing (Need it for DB Storage)
+
+def hash_token(token: str) -> str:
+    return hashlib.sha256(token.encode()).hexdigest()

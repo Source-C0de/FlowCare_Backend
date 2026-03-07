@@ -14,4 +14,6 @@ class UserRepository(ABC):
     async def find_by_email(self, email: str) -> User | None:
         ...
 
+    async def  get_email_with_role(self, email: str) -> User | None:
+        ...
 

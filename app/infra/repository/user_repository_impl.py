@@ -10,7 +10,8 @@ from app.infra.models.users import User as UserModel
 from app.infra.models.customer_profiles import CustomerProfile as CustomerProfileModel
 from sqlalchemy.exc import IntegrityError
 from app.config import settings
-
+from sqlalchemy.orm import joinedload
+from app.infra.models.roles import Role
 
 class UserRepositoryImpl(UserRepository):
     async def save_user(self, user: User) -> None:
@@ -67,5 +68,26 @@ class UserRepositoryImpl(UserRepository):
                 phone=row.phone,
             )
 
+    async def get_email_with_role(self, email: str) -> User | None:
+        async with AsyncSessionLocal() as session:
+            result = await session.execute(
+                select(UserModel, Role.role_type)
+                .outerjoin(Role, UserModel.role_id == Role.id)
+                .where(UserModel.email == email)
+            )
+            row = result.first()
 
+            if row is None:
+                return None
+                
+            user_model = row[0]
+            role_type = row[1]
 
+            return User(
+                id=user_model.id,
+                email=user_model.email,
+                hashed_password=user_model.password_hash,
+                phone=user_model.phone,
+                role_type=role_type,
+                is_active=user_model.is_active,
+            )

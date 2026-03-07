@@ -11,11 +11,15 @@ class User:
         email: str,
         hashed_password: str,
         phone: Optional[str] = None,
+        role_type: Optional[str] = None,
+        is_active: bool = True,
     ):
         self.id = id
         self.email = email
         self.hashed_password = hashed_password
         self.phone = phone
+        self.role_type = role_type
+        self.is_active = is_active
 
     def changed_password(self, new_hashed_password: str) -> None:
         self.hashed_password = new_hashed_password
