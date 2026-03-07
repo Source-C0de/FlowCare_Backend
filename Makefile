@@ -40,3 +40,15 @@ history:
 
 current:
 	./venv/bin/alembic current
+
+
+
+# Git
+add:
+	git add .
+
+pull:
+	git pull origin master
+
+push:
+	git push origin master
