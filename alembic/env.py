@@ -16,6 +16,13 @@ from app.infra.models import (
     roles,
     users,
     customer_profiles,
+    appoinment,
+    branch,
+    slot,
+    service_type,
+    staff_service_type,
+    staff_profiles,
+    audit_logs,
 ) # noqa: F401
 
 

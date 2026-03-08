@@ -1,9 +1,9 @@
+import uuid
 from sqlalchemy import Column, Integer, String, Boolean, ForeignKey
+from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import relationship
 from app.infra.db.base import Base
 from datetime import datetime
-from uuid import uuid4
-from app.infra.models import service_type, staff_profiles
 
 
 

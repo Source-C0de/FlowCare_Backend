@@ -91,7 +91,7 @@ class UserLoginUseCase:
         if not user:
             raise HTTPException(
                 status_code=status.HTTP_401_UNAUTHORIZED,
-                details="User Not Found",
+                detail="User Not Found",
                 headers={"WWW-Authenticate": "Basic"},
             )
         user_verified = verify_password(payload.password, user.hashed_password)

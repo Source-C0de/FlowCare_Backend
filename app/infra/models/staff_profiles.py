@@ -1,6 +1,7 @@
-from sqlalchemy import Column , Integer , String , Boolean , ForeignKey
+import uuid
+from sqlalchemy import Column, Integer, String, Boolean, ForeignKey
+from sqlalchemy.dialects.postgresql import UUID
 from app.infra.db.base import Base
-from uuid import uuid4
 from datetime import datetime
 
     # "id": "usr_mgr_001",

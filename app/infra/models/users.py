@@ -31,9 +31,9 @@ class User(Base):
         uselist=False,
         cascade="all, delete-orphan"
     )
-    refresh_tokens = relationship(
-        "RefreshToken", back_populates="user", cascade="all, delete-orphan"
-    )
+    # refresh_tokens = relationship(
+    #     "RefreshToken", back_populates="user", cascade="all, delete-orphan"
+    # )
 
 
 # class RefreshToken(Base):

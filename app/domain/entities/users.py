@@ -1,4 +1,4 @@
-from cgitb import text
+
 from optparse import Option
 from typing import Optional
 from uuid import UUID
@@ -33,7 +33,7 @@ class CustomerProfiles:
         user_name: Optional[str],
         first_name: Optional[str],
         last_name: Optional[str],
-        id_image_path: Optional[text]
+        id_image_path: Optional[str]
     ):
         self.id = id
         self.user_id = user_id

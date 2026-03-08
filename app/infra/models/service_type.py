@@ -1,4 +1,6 @@
-from fastapi import Column, Interger, String , Boolean , DateTime, 
+import uuid
+from sqlalchemy import Column, Integer, String, Boolean, DateTime, ForeignKey, Text
+from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import relationship
 from app.infra.db.base import Base
 
@@ -17,6 +19,6 @@ class ServiceType(Base):
     id = Column(String(100), unique=True, nullable=False)
     branch_id = Column(String(100), ForeignKey("branches.id"), nullable=False)
     name = Column(String(200), nullable=False)
-    description = Column(Text(500), nullable=False)
+    description = Column(Text, nullable=False)
     duration_minutes = Column(Integer, nullable=False)
     is_active = Column(Boolean, nullable=False) 

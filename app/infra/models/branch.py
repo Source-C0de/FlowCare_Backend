@@ -1,5 +1,7 @@
-from sqlalchemy import Column, Integer, String, Boolean,UUID
-from datetime import datetime,timezone
+import uuid
+from sqlalchemy import Column, Integer, String, Boolean
+from sqlalchemy.dialects.postgresql import UUID
+from datetime import datetime, timezone
 from sqlalchemy.orm import relationship
 from app.infra.db.base import Base
 

@@ -1,8 +1,9 @@
-from sqlalcheamy import Column, Integer, Boolean,String, JSONB, UUID
-from sqlalchemmy.orm import relationship
+import uuid
+from sqlalchemy import Column, Integer, Boolean, String
+from sqlalchemy.dialects.postgresql import JSONB, UUID
+from sqlalchemy.orm import relationship
+from sqlalchemy.ext.hybrid import hybrid_property
 from app.infra.db.base import Base
-
-
 # "id": "aud_002",
 # "actor_id": "usr_cust_001",
 # "actor_role": "CUSTOMER",
@@ -17,7 +18,7 @@ from app.infra.db.base import Base
 # }
 
 
-class AuditLogs:
+class AuditLogs(Base):
     __tablename__ = "audit_logs"
 
     uid = Column(UUID(as_uuid=True), unique=True , primary_key=True)
@@ -28,9 +29,9 @@ class AuditLogs:
     entity_id = Column(UUID(as_uuid=True), nullable=False, index=True) # each entity id
     entity_type = Column(String(50), nullable=False) # e.g., APPOINTMENT
     
-    metadata = Column(JSONB, nullable=True)
+    log_metadata = Column("metadata", JSONB, nullable=True)
 
     @hybrid_property
-    def id(str) -> str:
+    def formatted_id(self) -> str:
         return f"aud_{self.id}"
     
