@@ -21,7 +21,7 @@ class Slot(Base):
     id = Column(String(100), unique=True, nullable=False)
     branch_id = Column(String(100), ForeignKey("branches.id"), nullable=False)
     service_type_id = Column(String(100), ForeignKey("service_types.id"), nullable=False)
-    staff_id = Column(String(100), ForeignKey("staff.id"), nullable=True)
+    staff_id = Column(Interger, ForeignKey("staff_profiles.id"), nullable=True)
     start_time = Column(datetime, nullable=False)
     end_time = Column(datetime, nullable=False)
     is_booked = Column(Boolean, nullable=False)

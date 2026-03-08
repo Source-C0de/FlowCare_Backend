@@ -36,26 +36,26 @@ class User(Base):
     )
 
 
-class RefreshToken(Base):
-    __tablename__ = "refresh_tokens"
+# class RefreshToken(Base):
+#     __tablename__ = "refresh_tokens"
 
-    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4())
-    user_id = Column(UUID(as_uuid=True), ForeignKey("users.id", ondelete="CASCADE"),nullable=False, index=True)
-    token_hash    = Column(Text, nullable=False, unique=True)   # SHA-256 hex
-    family_id     = Column(UUID(as_uuid=True), nullable=False, index=True)
-    issued_at     = Column(DateTime(timezone=True), server_default=func.now(), nullable=False)
-    expires_at    = Column(DateTime(timezone=True), nullable=False)
-    revoked_at    = Column(DateTime(timezone=True), nullable=True)
-    revoke_reason = Column(String(80), nullable=True)
-    user_agent    = Column(Text, nullable=True)
-    ip_address    = Column(INET, nullable=True)
+#     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4())
+#     user_id = Column(UUID(as_uuid=True), ForeignKey("users.id", ondelete="CASCADE"),nullable=False, index=True)
+#     token_hash    = Column(Text, nullable=False, unique=True)   # SHA-256 hex
+#     family_id     = Column(UUID(as_uuid=True), nullable=False, index=True)
+#     issued_at     = Column(DateTime(timezone=True), server_default=func.now(), nullable=False)
+#     expires_at    = Column(DateTime(timezone=True), nullable=False)
+#     revoked_at    = Column(DateTime(timezone=True), nullable=True)
+#     revoke_reason = Column(String(80), nullable=True)
+#     user_agent    = Column(Text, nullable=True)
+#     ip_address    = Column(INET, nullable=True)
 
-    user = relationship("User", back_populates="refresh_tokens")
+#     user = relationship("User", back_populates="refresh_tokens")
 
-    @property
-    def is_valid(self) -> bool:
-        from datetime import timezone
-        return (
-            self.revoked_at is None
-            and self.expires_at > datetime.now(tz=timezone.utc)
-        )
+#     @property
+#     def is_valid(self) -> bool:
+#         from datetime import timezone
+#         return (
+#             self.revoked_at is None
+#             and self.expires_at > datetime.now(tz=timezone.utc)
+#         )
