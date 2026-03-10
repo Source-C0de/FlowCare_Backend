@@ -20,7 +20,7 @@ class AppointmentRepositoryImpl(AppointmentRepository):
                 is_active=appointment.is_active
             )
             return appointment
-        exception as e:
+        except Exception as e:
             raise HTTPException(e)
         self.appointments.append(appointment)
         return appointment
