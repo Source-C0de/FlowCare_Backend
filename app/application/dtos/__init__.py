@@ -15,3 +15,11 @@ class CustomerRegisterDTO(BaseModel):
 class UserLoginDTO(BaseModel):
     email: str
     password: str
+
+
+class AppointmentDTO(BaseModel):
+    branch_id: str
+    service_type_id: str
+    staff_id: str
+    start_time: str
+    end_time: str

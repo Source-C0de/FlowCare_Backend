@@ -12,7 +12,7 @@ router = APIRouter(prefix="/appointment", tags=["Appointment"])
 async def create_appointment(
     payload: CreateAppointmentRequest
 ):
-    print(payload)
+    
     return CreateAppointmentResponse(
         status="success",
         message="Appointment created successfully",
