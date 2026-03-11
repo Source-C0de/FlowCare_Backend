@@ -1,3 +1,5 @@
+"""Alembic environment — async migration runner."""
+
 from __future__ import annotations
 
 import asyncio
@@ -9,23 +11,21 @@ from sqlalchemy.engine import Connection
 from sqlalchemy.ext.asyncio import async_engine_from_config
 
 from app.config import settings
-from app.infra.db.base import Base
+from app.infrastructure.database.base import Base
 
-# Import models so they are registered on Base.metadata
-from app.infra.models import (
-    roles,
-    users,
-    customer_profiles,
-    appoinment,
-    branch,
-    slot,
-    service_type,
-    staff_service_type,
-    staff_profiles,
-    audit_logs,
-) # noqa: F401
-
-
+# Import all models so they are registered on Base.metadata
+from app.infrastructure.models import (  # noqa: F401
+    Role,
+    User,
+    CustomerProfile,
+    Appointment,
+    Branch,
+    Slot,
+    ServiceType,
+    StaffServiceType,
+    StaffProfile,
+    AuditLog,
+)
 
 config = context.config
 
@@ -45,7 +45,6 @@ def run_migrations_offline() -> None:
         dialect_opts={"paramstyle": "named"},
         compare_type=True,
     )
-
     with context.begin_transaction():
         context.run_migrations()
 
@@ -56,7 +55,6 @@ def do_run_migrations(connection: Connection) -> None:
         target_metadata=target_metadata,
         compare_type=True,
     )
-
     with context.begin_transaction():
         context.run_migrations()
 
@@ -81,4 +79,3 @@ if context.is_offline_mode():
     run_migrations_offline()
 else:
     asyncio.run(run_migrations_online())
-
