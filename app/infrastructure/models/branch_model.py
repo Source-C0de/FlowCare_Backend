@@ -16,5 +16,6 @@ class Branch(Base):
     name = Column(String(100), nullable=False)
     city = Column(String(100), nullable=False)
     address = Column(String(500), nullable=False)
+    phone = Column(String(30), nullable=True)
     timezone = Column(String(100), nullable=False)
     is_active = Column(Boolean, nullable=False)
