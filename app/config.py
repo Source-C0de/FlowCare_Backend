@@ -15,7 +15,7 @@ class Settings(BaseSettings):
     )
 
     # JWT
-    JWT_SECRET_KEY: str = secrets.token_urlsafe(64)
+    JWT_SECRET_KEY: str = "8d7a2e3f4b9c1a6f0d8e5c3b7f2a9d1c4e6b8f0a3c5d7e9f1a2b4c6d8e0f3a5"
     JWT_ALGORITHM: str = "HS256"
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 15
     REFRESH_TOKEN_EXPIRE_DAYS: int = 7
@@ -28,6 +28,9 @@ class Settings(BaseSettings):
     REFRESH_COOKIE_NAME: str = "refresh_token"
     ACCESS_COOKIE_NAME: str = "access_token"
 
+
+    #RATE LIMIT
+    RATE_LIMIT_BOOKINGS_PER_DAY: int = 2
 
     # ── Argon2id params ──────────────────────────────────────
     ARGON2_TIME_COST: int = 3

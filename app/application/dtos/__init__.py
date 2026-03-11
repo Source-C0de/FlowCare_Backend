@@ -1,17 +1,6 @@
-from token import OP
-from pydantic import BaseModel, EmailStr, Field
-from typing import Optional , List
-from datetime import datetime
-from dataclasses import dataclass
+"""Application-layer Data Transfer Objects."""
 
+from app.application.dtos.auth_dto import CustomerRegisterDTO, UserLoginDTO
+from app.application.dtos.appointment_dto import AppointmentDTO
 
-#Auth
-class CustomerRegisterDTO(BaseModel):
-    email: str
-    password: str
-    phone: Optional[str]
-
-
-class UserLoginDTO(BaseModel):
-    email: str
-    password: str
+__all__ = ["CustomerRegisterDTO", "UserLoginDTO", "AppointmentDTO"]

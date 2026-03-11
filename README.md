@@ -16,6 +16,110 @@ Production-grade starter for **FastAPI + Postgres** using **Clean Architecture /
 - `app/core/`: Cross-cutting concerns (settings, logging, DB session)
 
 
+## Current Problems
+1. **Broken imports** - `appointment.py` controller imports `AppointmentRepository` from use_cases (wrong)
+2. **Typos everywhere** - `appoinment` vs `appointment`, `excute` vs `execute`
+3. **SOLID violations**:
+   - Use cases instantiate their own repos (violates DIP)
+   - Use cases import FastAPI HTTPException (violates SRP - domain leaking into framework)
+   - Schemas mixed with DTOs
+   - No proper dependency injection
+4. **Layer bleeding** - Application layer imports API schemas, Infra layer raises HTTP exceptions
+5. **Duplicate Base class** in `db/base.py` and `db/session.py`
+6. **Dead code** - `dependencies.py` references undefined symbols, commented out exception handlers
+7. **No `__init__.py`** files in many packages
+
+
+
+```
+app/
+├── __init__.py
+├── main.py                          # FastAPI app creation
+├── config.py                        # Settings (unchanged)
+│
+├── domain/                          # LAYER 1: Enterprise Business Rules
+│   ├── __init__.py
+│   ├── entities/                    # Pure domain objects
+│   │   ├── __init__.py
+│   │   ├── user.py
+│   │   └── appointment.py
+│   ├── exceptions.py                # Domain-level exceptions
+│   └── interfaces/                  # Abstract repository contracts (ISP)
+│       ├── __init__.py
+│       ├── user_repository.py
+│       └── appointment_repository.py
+│
+├── application/                     # LAYER 2: Application Business Rules
+│   ├── __init__.py
+│   ├── dtos/                        # Data Transfer Objects
+│   │   ├── __init__.py
+│   │   ├── auth_dto.py
+│   │   └── appointment_dto.py
+│   └── use_cases/                   # Use cases (SRP - one class per use case)
+│       ├── __init__.py
+│       ├── register_user.py
+│       ├── login_user.py
+│       ├── logout_user.py
+│       └── book_appointment.py
+│
+├── infrastructure/                  # LAYER 3: Frameworks & Drivers
+│   ├── __init__.py
+│   ├── database/
+│   │   ├── __init__.py
+│   │   ├── base.py                  # Single Base class
+│   │   ├── session.py               # Engine + session factory
+│   │   └── connection.py            # Health check
+│   ├── models/                      # SQLAlchemy ORM models
+│   │   ├── __init__.py
+│   │   ├── user_model.py
+│   │   ├── role_model.py
+│   │   ├── appointment_model.py
+│   │   ├── branch_model.py
+│   │   ├── slot_model.py
+│   │   ├── service_type_model.py
+│   │   ├── staff_profile_model.py
+│   │   ├── staff_service_type_model.py
+│   │   ├── customer_profile_model.py
+│   │   └── audit_log_model.py
+│   ├── repositories/                # Concrete implementations (DIP)
+│   │   ├── __init__.py
+│   │   ├── user_repository_impl.py
+│   │   └── appointment_repository_impl.py
+│   └── security/
+│       ├── __init__.py
+│       ├── hashing.py               # Password hashing (SRP)
+│       ├── jwt_handler.py           # JWT create/decode (SRP)
+│       └── token_utils.py           # Token hashing
+│
+└── api/                             # LAYER 4: Interface Adapters
+    ├── __init__.py
+    ├── dependencies.py              # DI container - repo factories
+    ├── middleware/
+    │   ├── __init__.py
+    │   ├── exception_handlers.py
+    │   └── rbac.py
+    └── v1/
+        ├── __init__.py
+        ├── router.py                # All route aggregation
+        ├── schemas/                  # Request/Response schemas
+        │   ├── __init__.py
+        │   ├── user_schemas.py
+        │   ├── auth_schemas.py
+        │   └── appointment_schemas.py
+        └── endpoints/               # Route handlers (thin controllers)
+            ├── __init__.py
+            ├── health.py
+            ├── auth.py
+            └── appointment.py
+```
+
+## SOLID Principles Applied
+- **S** - Each use case is a single class with a single `execute()` method
+- **O** - Repository interfaces allow extension without modification
+- **L** - All repository implementations are substitutable for their interfaces
+- **I** - Separate repository interfaces per domain concept
+- **D** - Use cases depend on abstractions (interfaces), not implementations
+
 
 ## Tech Stack
 
