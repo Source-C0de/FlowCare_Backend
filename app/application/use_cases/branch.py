@@ -33,14 +33,21 @@ class BranchUseCase:
         branch = await self.branch_repository.find_by_id(branch_id)
         if branch is None:
             raise DomainException("Branch not found")
-            branch.name = request.name
-            branch.city = request.city
-            branch.address = request.address
-            branch.phone = request.phone
-            branch.timezone = request.timezone
-            branch.is_active = request.is_active
+            
+        branch.name = request.name
+        branch.city = request.city
+        branch.address = request.address
+        branch.phone = request.phone
+        branch.timezone = request.timezone
+        branch.is_active = request.is_active
         await self.branch_repository.update_branch(branch)
         return branch
 
     async def find_all(self):
         return await self.branch_repository.find_all()
+
+    async def delete_branch(self, branch_id: str) -> None:
+        branch = await self.branch_repository.find_by_id(branch_id)
+        if branch is None:
+            raise DomainException("Branch not found")
+        await self.branch_repository.delete_branch(branch_id)

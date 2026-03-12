@@ -1,12 +1,10 @@
 """Auth API schemas — token responses, messages, errors."""
 
 from __future__ import annotations
-
 import uuid
-from datetime import datetime
-from typing import Optional
+from app.common import Optional, BaseModel, datetime
 
-from pydantic import BaseModel
+
 
 
 class UserPublic(BaseModel):

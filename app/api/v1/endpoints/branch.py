@@ -1,6 +1,6 @@
 """Branch endpoints."""
 
-from fastapi import APIRouter, Depends, status
+from app.common import APIRouter, Depends, status
 
 from app.api.dependencies import get_branch_use_case
 from app.api.middleware.rbac import require_roles

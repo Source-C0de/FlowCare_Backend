@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from typing import Optional
 from fastapi import Depends
-from sqlalchemy import select, func
+from sqlalchemy import select, func, delete
 
 
 
@@ -37,7 +37,18 @@ class BranchRepositoryImpl(BranchRepository):
             result = await session.execute(
                 select(BranchModel).where(BranchModel.id == branch_id)
             )
-            return result
+            model = result.scalar_one_or_none()
+            if model:
+                return Branch(
+                    id=model.id,
+                    name=model.name,
+                    city=model.city,
+                    address=model.address,
+                    phone=model.phone,
+                    timezone=model.timezone,
+                    is_active=model.is_active
+                )
+            return None
 
     async def find_by_name(self, branch_name: str) -> Optional[Branch]:
         pass
@@ -46,20 +57,38 @@ class BranchRepositoryImpl(BranchRepository):
         try:
             async with AsyncSessionLocal() as session:
                 result = await session.execute(select(BranchModel))
-                return result.scalars().all()
+                models = result.scalars().all()
+                return [
+                    Branch(
+                        id=m.id, name=m.name, city=m.city, address=m.address,
+                        phone=m.phone, timezone=m.timezone, is_active=m.is_active
+                    ) for m in models
+                ]
         except Exception as exc:
             raise DomainException(str(exc))
 
     async def update_branch(self, branch: Branch) -> None:
         try:
-            for k, v in data.model_dump(exclude_none=True).items():
-                setattr(branch, k, v)
-            await db.flush()
+            async with AsyncSessionLocal() as session:
+                result = await session.execute(select(BranchModel).where(BranchModel.id == branch.id))
+                model = result.scalar_one()
+                model.name = branch.name
+                model.city = branch.city
+                model.address = branch.address
+                model.phone = branch.phone
+                model.timezone = branch.timezone
+                model.is_active = branch.is_active
+                await session.commit()
         except Exception as exc:
             raise DomainException(str(exc))
 
     async def delete_branch(self, branch_id: str) -> None:
-        pass
+        try:
+            async with AsyncSessionLocal() as session:
+                await session.execute(delete(BranchModel).where(BranchModel.id == branch_id))
+                await session.commit()
+        except Exception as exc:
+            raise DomainException(str(exc))
 
     async def count_by_city(self, city: str) -> int:
         async with AsyncSessionLocal() as session:
