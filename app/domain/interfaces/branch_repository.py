@@ -21,12 +21,16 @@ class BranchRepository(ABC):
 
     @abstractmethod
     async def find_all(self) -> list[Branch]:
-        pass
+        ...
 
     @abstractmethod
     async def update_branch(self, branch: Branch) -> None:
-        pass
+        ...
 
     @abstractmethod
     async def delete_branch(self, branch_id: str) -> None:
         pass
+
+    @abstractmethod
+    async def count_by_city(self, city: str) -> int:
+        ...
