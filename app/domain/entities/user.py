@@ -2,9 +2,7 @@
 
 from __future__ import annotations
 
-from dataclasses import dataclass, field
-from typing import Optional
-from uuid import UUID
+from app.common import Optional, dataclass, UUID
 
 
 @dataclass

@@ -29,6 +29,10 @@ from fastapi.responses import JSONResponse
 #Datetime
 from datetime import datetime
 
+
+#Dataclass
+from dataclasses import dataclass
+
 __all__ = [
     "Optional", "Any", "Callable", "List",
     "APIRouter", "Depends", "HTTPException", "status", "Request", "Response", "Cookie",

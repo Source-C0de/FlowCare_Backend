@@ -2,11 +2,8 @@
 
 from __future__ import annotations
 
-from dataclasses import dataclass
-from datetime import datetime
-from typing import Optional
-from uuid import UUID
-
+from app.common import datetime,Optional, dataclass, UUID
+    
 
 @dataclass
 class Appointment:
