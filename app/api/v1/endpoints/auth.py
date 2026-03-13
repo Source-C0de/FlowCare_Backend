@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from app.common import APIRouter, Cookie, Depends, Request, Response, status
+from app.common import APIRouter, Cookie, Depends, Request, Response, status, JSONResponse
 
 from app.api.dependencies import get_login_use_case, get_logout_use_case, get_register_use_case
 from app.api.v1.schemas.user_schemas import CreateUserRequest, UserRegisterResponse, UserLoginRequest

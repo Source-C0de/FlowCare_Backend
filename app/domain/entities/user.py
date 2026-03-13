@@ -2,7 +2,8 @@
 
 from __future__ import annotations
 
-from app.common import Optional, dataclass, UUID
+from app.common import Optional, dataclass
+from uuid import UUID
 
 
 @dataclass

@@ -3,7 +3,7 @@
 from app.common import APIRouter, Depends, status
 
 from app.api.dependencies import get_branch_use_case
-from app.api.middleware.rbac import require_roles
+from app.api.middleware.Rbac import require_roles
 from app.api.v1.schemas.branch_schemas import CreateBranchRequest
 from app.application.dtos.branch_dto import CreateBranchDTO
 from app.application.use_cases.branch import BranchUseCase
