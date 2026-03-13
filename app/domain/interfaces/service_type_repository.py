@@ -11,8 +11,8 @@ class ServiceTypeRepository(ABC):
         pass
 
     @abstractmethod
-    def get_service_type(self, service_type_id: str) -> ServiceType:
-        pass
+    def get_service_type(self, service_type_id: uuid.UUID) -> ServiceType:
+        ...
 
     @abstractmethod
     def create_service_type(self, service_type: ServiceType) -> ServiceType:
@@ -20,10 +20,10 @@ class ServiceTypeRepository(ABC):
 
     @abstractmethod
     def update_service_type(self, service_type_id: str, service_type: ServiceType) -> ServiceType:
-        pass
+        ...
 
     @abstractmethod
-    def delete_service_type(self, service_type_id: str) -> ServiceType:
+    def delete_service_type(self, service_type_id: uuid.UUID) -> None:
         ...    
     @abstractmethod
     def count_by_branch_id(self, branch_id: str) -> int:

@@ -21,12 +21,15 @@ class CreateServiceTypeRequest(BaseModel):
 
 
 
+from typing import Optional
+
 class UpdateServiceTypeRequest(BaseModel):
-    name: str
-    description: str
-    price: float
-    duration: int
-    is_active: bool
+    id: Optional[str] = None
+    name: Optional[str] = None
+    branch_id: Optional[str] = None
+    description: Optional[str] = None
+    duration_minutes: Optional[int] = None
+    is_active: Optional[bool] = None
 
 
 class DeleteServiceTypeRequest(BaseModel):

@@ -1,0 +1,21 @@
+{
+  "name": "Create Service_type",
+  "rank": "aw",
+  "request": {
+    "type": "http",
+    "url": "{{url}}service-types/",
+    "scripts": {
+      "preRequest": "",
+      "postResponse": ""
+    },
+    "method": "POST",
+    "queryParams": [],
+    "headers": [],
+    "body": "",
+    "contentType": "text/plain",
+    "auth": {
+      "currentAuthType": "INHERIT",
+      "authConfigStore": {}
+    }
+  }
+}

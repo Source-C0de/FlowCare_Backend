@@ -1,11 +1,21 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
+from typing import Optional
 
 @dataclass
 class ServiceTypeDTO:
-    name: str
-    branch_id: str
-    description: str
-    duration_minutes: int
-    is_active: bool
+    name: Optional[str] | None
+    branch_id: Optional[str] | None
+    description: Optional[str] | None
+    duration_minutes: Optional[int] | None
+    is_active: Optional[bool] | None
+
+@dataclass
+class ServiceTypeUpdateDTO:
+    id: Optional[str] | None
+    name: Optional[str] | None
+    branch_id: Optional[str] | None
+    description: Optional[str] | None
+    duration_minutes: Optional[int] | None
+    is_active: Optional[bool] | None

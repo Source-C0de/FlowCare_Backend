@@ -27,10 +27,10 @@ class ServiceTypeRepositoryImpl(ServiceTypeRepository):
         except Exception as exc:
             raise DomainException(str(exc))
 
-    async def get_service_type(self, service_type_id: str):
+    async def get_service_type(self, service_type_id: uuid.UUID)-> ServiceType:
         try:
             async with AsyncSessionLocal() as session:
-                result = await session.execute(select(ServiceTypeModel).where(ServiceTypeModel.id == service_type_id))
+                result = await session.execute(select(ServiceTypeModel).where(ServiceTypeModel.uid == service_type_id))
                 model = result.scalar_one_or_none()
                 if model:
                     return ServiceType(
@@ -64,12 +64,13 @@ class ServiceTypeRepositoryImpl(ServiceTypeRepository):
         except Exception as exc:
             raise DomainException(str(exc))
 
-    async def update_service_type(self, service_type_id: str, service_type: ServiceType):
+    async def update_service_type(self, service_type_id: uuid.UUID, service_type: ServiceType)-> ServiceType:
         try:
             async with AsyncSessionLocal() as session:
-                result = await session.execute(select(ServiceTypeModel).where(ServiceTypeModel.id == service_type_id))
+                result = await session.execute(select(ServiceTypeModel).where(ServiceTypeModel.uid == service_type_id))
                 model = result.scalar_one_or_none()
                 if model:
+                    model.id = service_type.id
                     model.name = service_type.name
                     model.branch_id = service_type.branch_id
                     model.description = service_type.description
@@ -86,10 +87,10 @@ class ServiceTypeRepositoryImpl(ServiceTypeRepository):
         except Exception as exc:
             raise DomainException(str(exc))
 
-    async def delete_service_type(self, service_type_id: str):
+    async def delete_service_type(self, service_type_id: uuid) -> None:
         try:
             async with AsyncSessionLocal() as session:
-                result = await session.execute(select(ServiceTypeModel).where(ServiceTypeModel.id == service_type_id))
+                result = await session.execute(select(ServiceTypeModel).where(ServiceTypeModel.uid == service_type_id))
                 model = result.scalar_one_or_none()
                 if model:
                     await session.delete(model)

@@ -30,16 +30,37 @@ class ServiceTypeUseCase:
                 duration_minutes=service_type.duration_minutes,
                 is_active=service_type.is_active,
             )
-            return result
-            # return await self.service_type_repository.create_service_type(result)
+            return await self.service_type_repository.create_service_type(result)
         except Exception as e:
             raise DomainException(str(e))
 
-    async def update_service_type(self, service_type_id: str, service_type: ServiceType):
-        return await self.service_type_repository.update_service_type(service_type_id, service_type)
-
-    async def delete_service_type(self, service_type_id: str):
+    async def update_service_type(self, service_type_id: uuid.UUID, service_type: ServiceTypeUpdateDTO):
         try:
-            return await self.service_type_repository.delete_service_type(service_type_id)
+            check_service_availibility = await self.service_type_repository.get_service_type(service_type_id)
+            if check_service_availibility is None:
+                return {
+                    message: "Service Not Found"
+                }
+            result = await self.service_type_repository.update_service_type(service_type_id, service_type)
+            return {
+                "message": "Service Updated Successfully",
+                "data": result
+            }
+        except Exception as e:
+            raise DomainException(str(e))
+
+    async def delete_service_type(self, service_type_id: uuid.UUID):
+        try:
+            service_type = await self.service_type_repository.get_service_type(service_type_id)
+            if service_type is None:
+                return {
+                    "message": "Service Not Found"
+                }
+            result = await self.service_type_repository.delete_service_type(service_type_id)
+            if result is None:
+                return {
+                    "message": "Service Deleted Successfully"+str(service_type_id)
+                }
+            return result
         except Exception as e:
             raise DomainException(str(e))

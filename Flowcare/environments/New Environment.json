@@ -1,0 +1,11 @@
+{
+  "name": "New Environment",
+  "variables": {
+    "url": {
+      "value": "http://localhost:8000/api/v1/",
+      "type": "string",
+      "id": "426dabeb-7a39-480d-82e4-53e17ec9d140",
+      "isSecret": false
+    }
+  }
+}
