@@ -8,6 +8,8 @@ from fastapi import FastAPI
 
 from app.config import get_settings
 from app.api.v1.routers import api_router
+
+
 from app.api.middleware import add_exception_handlers
 
 settings = get_settings()
@@ -28,7 +30,6 @@ def create_app() -> FastAPI:
         docs_url="/flowcare/docs",
         redoc_url="/flowcare/redoc",
     )
-
     add_exception_handlers(app)
 
     app.include_router(api_router, prefix="/api/v1")
