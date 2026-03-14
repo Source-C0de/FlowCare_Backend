@@ -25,3 +25,25 @@ class UserLoginResponse(BaseModel):
     message: str
     id: str
     email: str
+
+class StaffRegisterRequest(BaseModel):
+    email: str
+    password: str
+    role: str
+    phone: Optional[str] = None
+
+class StaffRegisterResponse(BaseModel):
+    id: str
+    email: str
+    role: str
+    phone: Optional[str] = None
+
+
+__all__ = [
+    "CreateUserRequest",
+    "UserLoginRequest",
+    "UserRegisterResponse",
+    "UserLoginResponse",
+    "StaffRegisterRequest",
+    "StaffRegisterResponse",
+]

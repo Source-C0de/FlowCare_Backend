@@ -29,3 +29,11 @@ class UpdateSlotRequest(BaseModel):
 
 class DeleteSlotRequest(BaseModel):
     id: str
+
+
+__all__ = [
+    "GetSlotsRequest",
+    "CreateSlotRequest",
+    "UpdateSlotRequest",
+    "DeleteSlotRequest",
+]

@@ -1,19 +1,12 @@
 from __future__ import annotations
 
-from app.common import APIRouter,Depends,status,HTTPException
+from app.common import *
+from app.api.v1.schemas import * 
+from app.application.use_cases import *
 
-from app.api.v1.schemas.slot_schemas import (
-    GetSlotsRequest,
-    CreateSlotRequest,
-    UpdateSlotRequest,
-    DeleteSlotRequest
-)
-from app.application.use_cases.slots import SlotUseCase
 from app.api.dependencies import get_slot_use_case
-from app.application.dtos.slot_dto import SlotDTO, SlotUpdateDTO
 from app.api.middleware.Rbac import require_roles
 from app.domain.entities.user import User
-from uuid import UUID
 
 
 

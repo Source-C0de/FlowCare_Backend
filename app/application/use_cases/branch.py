@@ -51,3 +51,10 @@ class BranchUseCase:
         if branch is None:
             raise DomainException("Branch not found")
         await self.branch_repository.delete_branch(branch_id)
+
+
+
+
+__all__ = [
+    "BranchUseCase"
+]

@@ -78,3 +78,19 @@ class ServiceTypeResponse(BaseModel):
     status: str
     message: str
     data: ServiceType
+
+
+__all__ = [
+    "ServiceType",
+    "CreateServiceTypeRequest",
+    "UpdateServiceTypeRequest",
+    "DeleteServiceTypeRequest",
+    "GetServiceTypeRequest",
+    "GetServiceTypesRequest",
+    "CreateServiceTypeResponse",
+    "UpdateServiceTypeResponse",
+    "DeleteServiceTypeResponse",
+    "GetServiceTypeResponse",
+    "GetServiceTypesResponse",
+    "ServiceTypeResponse",
+]

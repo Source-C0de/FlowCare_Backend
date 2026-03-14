@@ -10,3 +10,8 @@ class CreateBranchDTO:
     phone: str
     timezone: str | None
     is_active: bool
+
+
+__all__ = [
+    "CreateBranchDTO",
+]

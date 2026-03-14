@@ -1,17 +1,13 @@
 """Branch ORM model."""
 
-import uuid
-
-from sqlalchemy import Boolean, Column, String
-from sqlalchemy.dialects.postgresql import UUID
-
+from app.common import *
 from app.infrastructure.database.base import Base
 
 
 class Branch(Base):
     __tablename__ = "branches"
 
-    uid = Column(UUID(as_uuid=True), primary_key=True, index=True, default=uuid.uuid4)
+    uid = Column(SQL_UUID(as_uuid=True), primary_key=True, index=True, default=uuid.uuid4)
     id = Column(String(100), unique=True, nullable=False)
     name = Column(String(100), nullable=False)
     city = Column(String(100), nullable=False)

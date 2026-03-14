@@ -32,3 +32,12 @@ class MessageResponse(BaseModel):
 class ErrorResponse(BaseModel):
     error: str
     detail: Optional[str] = None
+
+
+__all__ = [
+    "UserPublic",
+    "TokenResponse",
+    "MessageResponse",
+    "ErrorResponse",
+]
+    

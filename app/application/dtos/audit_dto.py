@@ -9,3 +9,8 @@ class AuditLogsRequest:
     limit: Optional[int] | None
     term: Optional[int] | None
 
+
+
+__all__ = [
+    "AuditLogsRequest",
+]

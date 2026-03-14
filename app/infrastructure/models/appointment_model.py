@@ -1,18 +1,13 @@
 """Appointment ORM model."""
 
-import uuid
-
-from sqlalchemy import Column, ForeignKey, Integer, String
-from sqlalchemy.dialects.postgresql import UUID
-from sqlalchemy.ext.hybrid import hybrid_property
-
+from app.common import *
 from app.infrastructure.database.base import Base
 
 
 class Appointment(Base):
     __tablename__ = "appoinments"
 
-    id = Column(UUID(as_uuid=True), primary_key=True, index=True, default=uuid.uuid4)
+    id = Column(SQL_UUID(as_uuid=True), primary_key=True, index=True, default=uuid.uuid4)
     appoinment_no = Column(String(100), unique=True, nullable=False)
     branch_id = Column(String(100), ForeignKey("branches.id"), nullable=False)
     slot_id = Column(String(100), ForeignKey("slots.id"))

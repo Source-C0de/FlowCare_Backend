@@ -64,3 +64,10 @@ class ServiceTypeUseCase:
             return result
         except Exception as e:
             raise DomainException(str(e))
+
+
+
+
+__all__ = [
+    "ServiceTypeUseCase"
+]

@@ -22,3 +22,10 @@ class PaginatedResponse(BaseModel):
     total: int
     page: int
     limit: int
+
+
+__all__ = [
+    "AuditLogsRequest",
+    "AuditLogResponse",
+    "PaginatedResponse",
+]

@@ -41,3 +41,13 @@ class CancelAppointmentResponse(BaseModel):
 
 class UpdateAppointmentRequest(BaseModel):
     appointment_id: str
+
+
+__all__ = [
+    "AppointmentDetails",
+    "CreateAppointmentRequest",
+    "CreateAppointmentResponse",
+    "CancelAppointmentRequest",
+    "CancelAppointmentResponse",
+    "UpdateAppointmentRequest",
+]

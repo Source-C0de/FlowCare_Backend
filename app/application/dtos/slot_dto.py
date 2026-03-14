@@ -27,3 +27,8 @@ class SlotUpdateDTO:
     is_booked: Optional[bool] | None
 
 
+
+__all__ = [
+    "SlotDTO",
+    "SlotUpdateDTO",
+]

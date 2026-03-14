@@ -2,16 +2,12 @@
 
 from __future__ import annotations
 
-from app.common import APIRouter, Depends, HTTPException, status
+from app.common import *
+from app.api.v1.schemas import *
+
 
 from app.api.middleware.Rbac import get_current_user
-from app.api.v1.schemas.appointment_schemas import (
-    CancelAppointmentRequest,
-    CancelAppointmentResponse,
-    CreateAppointmentRequest,
-    CreateAppointmentResponse,
-    UpdateAppointmentRequest,
-)
+
 
 router = APIRouter(prefix="/appointment", tags=["Appointment"])
 

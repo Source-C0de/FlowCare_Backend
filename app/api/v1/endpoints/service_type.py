@@ -1,20 +1,11 @@
 """Service type endpoints."""
 
-import uuid
-from app.common import APIRouter, Depends, status
-from app.api.middleware.Rbac import require_roles
-from app.api.v1.schemas.service_type_schemas import (
-    CreateServiceTypeRequest,
-    UpdateServiceTypeRequest,
-    DeleteServiceTypeRequest,
-    GetServiceTypeRequest,
-    GetServiceTypesRequest,
-    GetServiceTypeResponse,
-    CreateServiceTypeResponse,
-)
-from app.application.dtos.service_type_dto import ServiceTypeDTO, ServiceTypeUpdateDTO
+from app.common import *
+from app.api.v1.schemas import *
+from app.application.use_cases import *
+
 from app.api.dependencies import get_service_type_use_case
-from app.application.use_cases.service_type import ServiceTypeUseCase
+from app.api.middleware.Rbac import require_roles
 
 router = APIRouter(prefix="/service-types", tags=["Service Types"])
 

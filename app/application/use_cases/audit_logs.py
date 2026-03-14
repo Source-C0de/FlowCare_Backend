@@ -27,3 +27,12 @@ class AuditLogsUseCase:
             return await self._repo.export_logs(request)
         except Exception as e:
             raise DomainException(str(e))   
+
+
+
+
+
+
+__all__ = [
+    "AuditLogsUseCase"
+]

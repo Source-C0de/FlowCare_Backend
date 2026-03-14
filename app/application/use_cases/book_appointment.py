@@ -28,3 +28,9 @@ class BookAppointmentUseCase:
             appointment=None  # type: ignore  # will be a proper entity once slot logic is wired
         )
         return result
+
+
+
+__all__ = [
+    "BookAppointmentUseCase"
+]

@@ -19,3 +19,10 @@ class ServiceTypeUpdateDTO:
     description: Optional[str] | None
     duration_minutes: Optional[int] | None
     is_active: Optional[bool] | None
+
+
+
+__all__ = [
+    "ServiceTypeDTO",
+    "ServiceTypeUpdateDTO",
+]

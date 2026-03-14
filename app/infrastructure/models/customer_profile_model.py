@@ -1,14 +1,7 @@
 """CustomerProfile ORM model."""
 
-import uuid
-from datetime import datetime, timezone
-
-from sqlalchemy import Column, ForeignKey, Integer, String
-from sqlalchemy.dialects.postgresql import UUID
-from sqlalchemy.orm import relationship
-
+from app.common import *
 from app.infrastructure.database.base import Base
-
 
 class CustomerProfile(Base):
     __tablename__ = "customer_profiles"

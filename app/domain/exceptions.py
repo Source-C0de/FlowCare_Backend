@@ -46,3 +46,10 @@ class ValidationException(DomainException):
 
     def __init__(self, message: str = "Validation failed"):
         super().__init__(message)
+
+
+class UserNotFoundException(NotFoundException):
+    """User not found."""
+
+    def __init__(self, message: str = "User not found"):
+        super().__init__(message)

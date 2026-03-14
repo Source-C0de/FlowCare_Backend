@@ -1,17 +1,12 @@
 from __future__ import annotations
 
-from app.common import APIRouter,Depends,status,HTTPException,pagination_params,PaginationRequest
+from app.common import *
+from app.api.v1.schemas import *
+from app.application.use_cases import *
 
-from fastapi.responses import StreamingResponse
+
 from app.api.dependencies import get_audit_use_case
-from app.application.use_cases.audit_logs import AuditLogsUseCase
 from app.api.middleware.Rbac import require_roles
-from app.api.v1.schemas.audit_shcemas import (
-    AuditLogsRequest,
-    AuditLogResponse,
-    PaginatedResponse,
-)
-
 
 router = APIRouter(prefix="/audit", tags=["Audit"], dependencies=[Depends(require_roles("ADMIN"))])
 

@@ -13,3 +13,9 @@ class AppointmentDTO:
     slot_id: str
     start_time: str
     end_time: str
+
+
+
+__all__ = [
+    "AppointmentDTO",
+]

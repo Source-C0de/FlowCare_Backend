@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from typing import Optional
+from app.common import Optional
 
 from app.domain.entities.appointment import Appointment
 from app.domain.interfaces.appointment_repository import AppointmentRepository
