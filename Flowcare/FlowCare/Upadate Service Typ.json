@@ -1,0 +1,25 @@
+{
+  "name": "Upadate Service Typ",
+  "rank": "ax",
+  "request": {
+    "type": "http",
+    "url": "{{url}}service-types/{e41341bb-2650-47cd-9072-9d748c3769f6}",
+    "scripts": {
+      "preRequest": "",
+      "postResponse": ""
+    },
+    "method": "PATCH",
+    "queryParams": [],
+    "headers": [],
+    "body": "{\n  \"id\": \"test_update_1\",\n  \"name\": \"string\",\n  \"branch_id\": \"br_suhar_1\",\n  \"description\": \"string\",\n  \"duration_minutes\": 10,\n  \"is_active\": true\n}",
+    "contentType": "application/json",
+    "auth": {
+      "currentAuthType": "BEARER_TOKEN",
+      "authConfigStore": {
+        "BEARER_TOKEN": {
+          "bearer": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZTBiZTE5Ny1jMGZhLTRkNTgtOWU2Yy0xNzQ0MTZmYWU1NWYiLCJyb2xlIjoiQURNSU4iLCJ0eXBlIjoiYWNjZXNzIiwiaWF0IjoxNzczNDMzMDc2LCJleHAiOjE3NzM0MzQ4NzYsImp0aSI6IjM2YjY5ZWUwLTQ0YzktNGIxMy05MGFiLTg3MjE0MmMzOTYyOCJ9.5pdYIGD2eZH8tejJIbv3JsfFJiPxObZUZFLupwvu2cw"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "name": "Delete Service_type",
+  "rank": "av",
+  "request": {
+    "type": "http",
+    "url": "{{url}}service-types/{6b0cf19a-585a-48ca-9330-d483abb84279}",
+    "scripts": {
+      "preRequest": "",
+      "postResponse": ""
+    },
+    "method": "DELETE",
+    "queryParams": [],
+    "headers": [],
+    "body": "{\n  \"service_type_id\": \"6b0cf19a-585a-48ca-9330-d483abb84279\"\n}",
+    "contentType": "application/json",
+    "auth": {
+      "currentAuthType": "BEARER_TOKEN",
+      "authConfigStore": {
+        "BEARER_TOKEN": {
+          "bearer": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZTBiZTE5Ny1jMGZhLTRkNTgtOWU2Yy0xNzQ0MTZmYWU1NWYiLCJyb2xlIjoiQURNSU4iLCJ0eXBlIjoiYWNjZXNzIiwiaWF0IjoxNzczNDEwNjg0LCJleHAiOjE3NzM0MTI0ODQsImp0aSI6ImNjYmI5NjAyLTk0ZDgtNDcxOC1hMzc2LTIyOTM0ZWQzOTMxYiJ9.21rDwr5YgdzcL_-m_VpcNKlJ__RjaJS_ftUyywpdOmE"
+        }
+      }
+    }
+  }
+}
