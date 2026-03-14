@@ -38,6 +38,9 @@ def get_branch_repository() -> BranchRepository:
 def get_service_type_repository() -> ServiceTypeRepository:
     return ServiceTypeRepositoryImpl()
 
+def get_slot_repository() -> SlotRepository:
+    return SlotRepositoryImpl()
+
 
 # ── Use-case factories ────────────────────────────────────────
 
@@ -62,3 +65,9 @@ def get_branch_use_case() -> BranchUseCase:
 
 def get_service_type_use_case() -> ServiceTypeUseCase:
     return ServiceTypeUseCase(service_type_repository=get_service_type_repository())
+
+
+def get_slot_use_case() -> SlotUseCase:
+    return SlotUseCase(slot_repository=get_slot_repository())
+
+
