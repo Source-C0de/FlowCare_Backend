@@ -16,6 +16,10 @@ class UserRepository(ABC):
         ...
 
     @abstractmethod
+    async def save_staff(self, user: User) -> None:
+        ...
+
+    @abstractmethod
     async def save_customer_profile(self, profile: CustomerProfile) -> Optional[CustomerProfile]:
         ...
 

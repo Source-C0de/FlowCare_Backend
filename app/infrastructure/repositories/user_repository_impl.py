@@ -29,6 +29,8 @@ class UserRepositoryImpl(UserRepository):
                     password_hash=user.hashed_password,
                     role_id=settings.CUSTOMER,
                     phone=user.phone,
+                    is_active=True,
+                    is_verified=False,
                 )
                 profile = CustomerProfileModel(customer_email=user.email)
                 session.add(model)
@@ -44,6 +46,28 @@ class UserRepositoryImpl(UserRepository):
     async def save_customer_profile(self, profile: CustomerProfile) -> Optional[CustomerProfile]:
         # TODO: implement when needed
         return None
+
+
+    async def save_staff(self, user: User) -> None:
+        try:
+            async with AsyncSessionLocal() as session:
+                model = UserModel(
+                    email=user.email,
+                    password_hash=user.hashed_password,
+                    role_id=settings.STAFF if user.role_type=="STAFF" else settings.BRANCH_MANAGER,
+                    phone=user.phone,
+                    is_verified=True,
+                    is_active=True,
+                )
+                session.add(model)
+                await session.commit()
+        except IntegrityError:
+            await session.rollback()
+            raise ConflictException("Staff with this email already exists")
+        except Exception as exc:
+            await session.rollback()
+            raise DomainException(str(exc))
+
 
     async def find_by_email(self, email: str) -> Optional[User]:
         async with AsyncSessionLocal() as session:

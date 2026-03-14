@@ -40,13 +40,14 @@ class AuthUseCase:
         user_entity = User(
             id=uuid4(),
             email=dto.email,
-            password_hash=hashed, # Repo seems to use password_hash or hashed_password? I should check.
+            hashed_password=hashed, # Repo seems to use password_hash or hashed_password? I should check.
             phone=dto.phone,
-            is_active=True,
-            is_verified=False,
             role_type=role_type
         )
-        await self._repo.create_user(user_entity)
+        if role_type ==  "CUSTOMER":
+            await self._repo.save_user(user_entity)
+        else:
+            await self._repo.save_staff(user_entity)
         return user_entity
 
     async def login(self, user: UserLoginDTO)-> Tuple[User, str, str, str]:
