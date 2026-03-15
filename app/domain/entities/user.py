@@ -13,6 +13,9 @@ class User:
     hashed_password: str
     phone: Optional[str] = None
     role_type: Optional[str] = None
+    id_image_path: Optional[str] = None
+    is_active: bool = True
+    
 
     def change_password(self, new_hashed_password: str) -> None:
         self.hashed_password = new_hashed_password

@@ -12,6 +12,7 @@ from app.domain.interfaces.branch_repository import BranchRepository
 from app.domain.interfaces.service_type_repository import ServiceTypeRepository
 from app.domain.interfaces.slot_repository import SlotRepository
 from app.domain.interfaces.audit_logs_repository import AuditLogsRepository
+from app.domain.interfaces.file_repository import FileRepository
 
 
 from app.infrastructure.repositories.user_repository_impl import UserRepositoryImpl
@@ -20,11 +21,9 @@ from app.infrastructure.repositories.branch_repository_impl import BranchReposit
 from app.infrastructure.repositories.service_type_repository_impl import ServiceTypeRepositoryImpl
 from app.infrastructure.repositories.slot_repository_impl import SlotRepositoryImpl
 from app.infrastructure.repositories.audit_logs_repository_impl import AuditLogsRepositoryImpl
+from app.infrastructure.repositories.file_repository_impl import FileRepositoryImpl
 
 from app.application.use_cases.auth import AuthUseCase
-from app.application.use_cases.register_user import RegisterUserUseCase
-from app.application.use_cases.login_user import LoginUserUseCase
-from app.application.use_cases.logout_user import LogoutUserUseCase
 from app.application.use_cases.book_appointment import BookAppointmentUseCase
 from app.application.use_cases.branch import BranchUseCase
 from app.application.use_cases.service_type import ServiceTypeUseCase
@@ -53,21 +52,14 @@ def get_slot_repository() -> SlotRepository:
 def get_audit_logs_repository() -> AuditLogsRepository:
     return AuditLogsRepositoryImpl()
 
+def get_file_repository() -> FileRepository:
+    return FileRepositoryImpl()
+
 
 # ── Use-case factories ────────────────────────────────────────
 
 def get_auth_use_case() -> AuthUseCase:
-    return AuthUseCase(user_repo = get_user_repository())
-
-def get_register_use_case() -> RegisterUserUseCase:
-    return RegisterUserUseCase(user_repo=get_user_repository())
-
-def get_login_use_case() -> LoginUserUseCase:
-    return LoginUserUseCase(user_repo=get_user_repository())
-
-
-def get_logout_use_case() -> LogoutUserUseCase:
-    return LogoutUserUseCase()
+    return AuthUseCase(user_repo = get_user_repository(), file_repo=get_file_repository())
 
 
 def get_book_appointment_use_case() -> BookAppointmentUseCase:

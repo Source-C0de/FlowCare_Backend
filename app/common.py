@@ -15,6 +15,7 @@ Guidelines:
 # Python Standard Library
 # =========================
 from typing import Optional, Any, Callable, List, Dict
+from abc import ABC, abstractmethod
 from datetime import datetime
 from dataclasses import dataclass
 import uuid
@@ -32,6 +33,8 @@ from fastapi import (
     Request,
     Response,
     Cookie,
+    File,
+    UploadFile
 )
 
 from fastapi.responses import (
@@ -153,4 +156,12 @@ __all__ = [
     # pagination
     "PaginationRequest",
     "pagination_params",
+
+    # file
+    "File",
+    "UploadFile",
+
+    # abc
+    "ABC",
+    "abstractmethod"
 ]

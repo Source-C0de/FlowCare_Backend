@@ -5,7 +5,7 @@ from uuid import uuid4
 if TYPE_CHECKING:
     from app.domain.entities.user import User
 
-from app.application.dtos.auth_dto import UserLoginDTO, UserRegisterDTO, StaffRegisterDTO
+from app.application.dtos import *
 from app.domain.entities.user import User
 from app.domain.interfaces.user_repository import UserRepository
 from app.domain.exceptions import (
@@ -20,10 +20,14 @@ from app.infrastructure.security.jwt_handler import (
     create_refresh_token,
 )
 from app.infrastructure.security.token_utils import hash_token
+from app.infrastructure.utils.file_validation import validate_file, IMAGE_TYPE
+from app.config import settings
+from app.domain.interfaces import FileRepository
 
 class AuthUseCase:
-    def __init__(self, user_repo: UserRepository)-> None:
+    def __init__(self, user_repo: UserRepository, file_repo: FileRepository)-> None:
         self._repo = user_repo
+        self._file_repo = file_repo
 
     async def register(self, dto: UserRegisterDTO | StaffRegisterDTO) -> User:
         _check_user = await self._repo.find_by_email(dto.email)
@@ -36,13 +40,19 @@ class AuthUseCase:
         # If it's StaffRegisterDTO, it has a 'role'
         
         role_type = getattr(dto, 'role', 'CUSTOMER')
+        if role_type == "CUSTOMER":
+            await validate_file(dto.id_image, IMAGE_TYPE, settings.CUSTOMER_ID_MAX_SIZE)
+            id_image_path = await self._file_repo.upload_file(dto.id_image, "id_images")
+        else:
+            id_image_path = None
         
         user_entity = User(
             id=uuid4(),
             email=dto.email,
             hashed_password=hashed, # Repo seems to use password_hash or hashed_password? I should check.
             phone=dto.phone,
-            role_type=role_type
+            role_type=role_type,
+            id_image_path=id_image_path
         )
         if role_type ==  "CUSTOMER":
             await self._repo.save_user(user_entity)
@@ -54,7 +64,7 @@ class AuthUseCase:
         
         _user = await self._repo.get_email_with_role(user.email)
         if _user is None:
-            raise UserNotFound("User not found")
+            raise UserNotFoundException("User not found")
         
         if not verify_password(user.password, _user.hashed_password):
             raise UnauthorizedException("Invalid credentials")

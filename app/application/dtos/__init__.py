@@ -2,6 +2,13 @@
 
 # from app.application.dtos.auth_dto import UserRegisterDTO, UserLoginDTO
 # from app.application.dtos.appointment_dto import AppointmentDTO
+from . import auth_dto
+from . import appointment_dto
+from . import service_type_dto
+from . import slot_dto
+from . import branch_dto
+from . import audit_dto
+
 from .auth_dto import *
 from .appointment_dto import *
 from .service_type_dto import *

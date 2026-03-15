@@ -4,12 +4,14 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from typing import Optional
+from fastapi import UploadFile
 
 
 @dataclass(frozen=True)
 class UserRegisterDTO:
     email: str
     password: str
+    id_image: UploadFile
     phone: Optional[str] = None
 
 

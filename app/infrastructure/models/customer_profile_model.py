@@ -11,8 +11,8 @@ class CustomerProfile(Base):
         String, ForeignKey("users.email"), unique=True, nullable=False, index=True
     )
     user_name = Column(String, unique=True, nullable=True)
-    first_name = Column(String(100), nullable=True)
-    last_name = Column(String(100), nullable=True)
-    id_image_path = Column(String(500), nullable=True)
+    first_name = Column(String(100), nullable=False)
+    last_name = Column(String(100), nullable=False)
+    id_image_path = Column(String(500), nullable=False)
 
     user = relationship("User", back_populates="customer_profiles")

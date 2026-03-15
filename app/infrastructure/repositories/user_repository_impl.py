@@ -32,7 +32,10 @@ class UserRepositoryImpl(UserRepository):
                     is_active=True,
                     is_verified=False,
                 )
-                profile = CustomerProfileModel(customer_email=user.email)
+                profile = CustomerProfileModel(
+                    customer_email=user.email,
+                    id_image_path=user.id_image_path
+                )
                 session.add(model)
                 session.add(profile)
                 await session.commit()

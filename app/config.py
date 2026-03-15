@@ -54,6 +54,19 @@ class Settings(BaseSettings):
     STAFF: int  = 3
     CUSTOMER: int = 4
 
+
+    # MinIO
+    MINIO_ENDPOINT: str = "localhost:9000"
+    MINIO_ACCESS_KEY: str = "minioadmin"
+    MINIO_SECRET_KEY: str = "minioadmin"
+    MINIO_BUCKET_NAME: str = "flowcare"
+    MINIO_REGION: str = "us-east-1"
+    MINIO_SECURE: bool = False
+
+    CUSTOMER_ID_MAX_SIZE: int = 5 * 1024 * 1024
+    ATTACHMENT_MAX_SIZE: int = 5 * 1024 * 1024
+
+
     @property
     def DATABASE_URL(self) -> str:
         return (

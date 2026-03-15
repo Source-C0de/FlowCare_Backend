@@ -22,3 +22,6 @@ redis==5.0.4
 slowapi==0.1.9
 email-validator==2.1.1
 phonenumbers==8.13.37
+
+minio==7.2.13
+

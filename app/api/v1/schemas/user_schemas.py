@@ -1,12 +1,13 @@
 """User API schemas — request/response models."""
 
 from __future__ import annotations
-from app.common import Optional, BaseModel
+from app.common import *
 
 class CreateUserRequest(BaseModel):
     email: str
     password: str
     phone: Optional[str] = None
+    id_image: UploadFile = File(..., description="Required customer id image")
 
 
 class UserLoginRequest(BaseModel):

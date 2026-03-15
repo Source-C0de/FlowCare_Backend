@@ -1,0 +1,21 @@
+{
+  "name": "user register",
+  "rank": "az",
+  "request": {
+    "type": "http",
+    "url": "{{url}}auth/register",
+    "scripts": {
+      "preRequest": "",
+      "postResponse": ""
+    },
+    "method": "POST",
+    "queryParams": [],
+    "headers": [],
+    "body": "{\n  \"email\": \"fahim@gmail.com\",\n  \"password\": \"1234\",\n  \"phone\": \"1232123\"\n}",
+    "contentType": "text/plain",
+    "auth": {
+      "currentAuthType": "INHERIT",
+      "authConfigStore": {}
+    }
+  }
+}

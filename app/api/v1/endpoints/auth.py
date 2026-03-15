@@ -42,13 +42,14 @@ def _clear_refresh_cookie(response: Response) -> None:
 
 @router.post("/register", status_code=201, response_model=UserRegisterResponse)
 async def register(
-    request: CreateUserRequest,
+    request: CreateUserRequest = Depends(),
     use_case: AuthUseCase = Depends(get_auth_use_case),
 ):
     dto = UserRegisterDTO(
         email=request.email,
         password=request.password,
         phone=request.phone,
+        id_image=request.id_image,
     )
     user = await use_case.register(dto)
     return UserRegisterResponse(
