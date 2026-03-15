@@ -30,14 +30,20 @@ class UserLoginResponse(BaseModel):
 class StaffRegisterRequest(BaseModel):
     email: str
     password: str
+    username: str
+    full_name: str
     role: str
     phone: Optional[str] = None
+    branch_id: str
 
 class StaffRegisterResponse(BaseModel):
     id: str
     email: str
+    username: str
+    full_name: str
     role: str
     phone: Optional[str] = None
+    branch_id: str
 
 
 __all__ = [

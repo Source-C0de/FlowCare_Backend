@@ -25,7 +25,10 @@ class UserLoginDTO:
 class StaffRegisterDTO:
     email: str
     password: str
+    username: str
+    full_name: str
     role: str
+    branch_id: str
     phone: Optional[str] = None
 
 

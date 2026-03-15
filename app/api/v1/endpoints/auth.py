@@ -51,14 +51,14 @@ async def register(
         phone=request.phone,
         id_image=request.id_image,
     )
-    user = await use_case.register(dto)
+    user = await use_case.register_customer(dto)
     return UserRegisterResponse(
         id=str(user.id),
         email=user.email,
         phone=user.phone,
     )
 
-@router.post("/admin/staff/register", status_code=201, response_model=StaffRegisterResponse)
+@router.post("/admin/staff/register", status_code=201)
 async def register_staff(
     request: StaffRegisterRequest,
     use_case: AuthUseCase = Depends(get_auth_use_case),
@@ -67,16 +67,24 @@ async def register_staff(
     dto = StaffRegisterDTO(
         email=request.email,
         password=request.password,
+        username=request.username,
+        full_name=request.full_name,
         phone=request.phone,
+        branch_id=request.branch_id,
         role=request.role,
     )
-    user = await use_case.register(dto)
-    return StaffRegisterResponse(
-        id=str(user.id),
-        email=user.email,
-        phone=user.phone,
-        role=str(user.role_type)
-    )
+
+    user = await use_case.register_staff(dto)
+    # return StaffRegisterResponse(
+    #     # id=str(user.id),
+    #     email=user.email,
+    #     username=user.username,
+    #     full_name=user.full_name,
+    #     phone=user.phone,
+    #     branch_id=str(user.branch_id),
+    #     role=str(user.role_type)
+    # )
+    return user
 
 @router.post("/login", response_model=TokenResponse, status_code=status.HTTP_200_OK)
 async def login(

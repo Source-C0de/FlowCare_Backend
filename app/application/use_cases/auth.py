@@ -29,7 +29,7 @@ class AuthUseCase:
         self._repo = user_repo
         self._file_repo = file_repo
 
-    async def register(self, dto: UserRegisterDTO | StaffRegisterDTO) -> User:
+    async def register_customer(self, dto: UserRegisterDTO) -> User:
         _check_user = await self._repo.find_by_email(dto.email)
         if _check_user is not None:
             raise ConflictException("Email already registered") 
@@ -40,11 +40,13 @@ class AuthUseCase:
         # If it's StaffRegisterDTO, it has a 'role'
         
         role_type = getattr(dto, 'role', 'CUSTOMER')
-        if role_type == "CUSTOMER":
-            await validate_file(dto.id_image, IMAGE_TYPE, settings.CUSTOMER_ID_MAX_SIZE)
-            id_image_path = await self._file_repo.upload_file(dto.id_image, "id_images")
-        else:
-            id_image_path = None
+        # if role_type == "CUSTOMER":
+            
+        # else:
+        #     id_image_path = None
+        
+        await validate_file(dto.id_image, IMAGE_TYPE, settings.CUSTOMER_ID_MAX_SIZE)
+        id_image_path = await self._file_repo.upload_file(dto.id_image, "id_images")
         
         user_entity = User(
             id=uuid4(),
@@ -54,10 +56,39 @@ class AuthUseCase:
             role_type=role_type,
             id_image_path=id_image_path
         )
-        if role_type ==  "CUSTOMER":
-            await self._repo.save_user(user_entity)
-        else:
-            await self._repo.save_staff(user_entity)
+        await self._repo.save_user(user_entity) 
+        # if role_type ==  "CUSTOMER":
+        #     await self._repo.save_user(user_entity)
+        # else:
+        #     await self._repo.save_staff(user_entity)
+        return user_entity
+
+
+    async def register_staff(self, dto: StaffRegisterDTO) -> User:
+        _check_user = await self._repo.find_by_email(dto.email)
+        if _check_user is not None:
+            print(_check_user)
+            raise ConflictException("Email already registered") 
+        _check_staff = await self._repo.find_by_username(dto.username)
+        if _check_staff is True:
+            raise ConflictException("Username already registered")
+        _check_branch = await self._repo.find_by_branch_id(dto.branch_id)
+        if _check_branch is False:
+            raise ConflictException("Branch not found")
+        
+        hashed = hash_password(dto.password)
+
+        user_entity = User(
+            id=uuid4(),
+            email=dto.email,
+            hashed_password=hashed,
+            username=dto.username,
+            full_name=dto.full_name,
+            phone=dto.phone,
+            branch_id=dto.branch_id,
+            role_type=dto.role,
+        )
+        await self._repo.save_staff(user_entity)
         return user_entity
 
     async def login(self, user: UserLoginDTO)-> Tuple[User, str, str, str]:

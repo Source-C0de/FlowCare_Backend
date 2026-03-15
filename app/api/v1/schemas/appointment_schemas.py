@@ -15,12 +15,12 @@ class AppointmentDetails(BaseModel):
 
 
 class CreateAppointmentRequest(BaseModel):
+    customer_id: str
     branch_id: str
     slot_id: str
-    service_type_id: str
-    staff_id: str
-    start_time: str
-    end_time: str
+    service_type_id: Optional[str] = None
+    staff_id: Optional[str] = None
+    attachment_path: Optional[UploadFile] = None
 
 
 class CreateAppointmentResponse(BaseModel):
