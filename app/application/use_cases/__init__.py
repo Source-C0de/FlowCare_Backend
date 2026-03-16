@@ -13,7 +13,7 @@ from .branch import *
 from .service_type import *
 from .slots import *
 from .audit_logs import *
-from .book_appointment import *
+from .appointment import *
 
 
 
@@ -23,6 +23,6 @@ __all__ = (
     service_type.__all__ +
     slots.__all__ +
     audit_logs.__all__ +
-    book_appointment.__all__
+    appointment.__all__
 )
 

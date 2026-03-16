@@ -11,8 +11,8 @@
     "method": "POST",
     "queryParams": [],
     "headers": [],
-    "body": "{\n  \"email\": \"fahim@gmail.com\",\n  \"password\": \"1234\",\n  \"phone\": \"1232123\"\n}",
-    "contentType": "text/plain",
+    "body": [],
+    "contentType": "multipart/form-data",
     "auth": {
       "currentAuthType": "INHERIT",
       "authConfigStore": {}

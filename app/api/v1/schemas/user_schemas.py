@@ -2,11 +2,12 @@
 
 from __future__ import annotations
 from app.common import *
+from fastapi import Form, File
 
 class CreateUserRequest(BaseModel):
-    email: str
-    password: str
-    phone: Optional[str] = None
+    email: str = Form(...)
+    password: str = Form(...)
+    phone: Optional[str] = Form(None)
     id_image: UploadFile = File(..., description="Required customer id image")
 
 

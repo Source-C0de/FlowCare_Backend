@@ -1,17 +1,9 @@
 """Appointment ORM model."""
 
 from app.common import *
-import enum
 from sqlalchemy import Enum
 from app.infrastructure.database.base import Base
-
-class AppointmentStatus(enum.Enum):
-    BOOKED = "BOOKED"
-    CHECKED_IN = "CHECKED_IN"
-    NO_SHOW = "NO_SHOW"
-    COMPLETED = "COMPLETED"
-    CANCELLED = "CANCELLED"
-
+from app.domain.entities.appointment import AppointmentStatus
 class Appointment(Base):
     __tablename__ = "appoinments"
 

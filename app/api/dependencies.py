@@ -24,7 +24,7 @@ from app.infrastructure.repositories.audit_logs_repository_impl import AuditLogs
 from app.infrastructure.repositories.file_repository_impl import FileRepositoryImpl
 
 from app.application.use_cases.auth import AuthUseCase
-from app.application.use_cases.book_appointment import BookAppointmentUseCase
+from app.application.use_cases.appointment import AppointmentUseCase
 from app.application.use_cases.branch import BranchUseCase
 from app.application.use_cases.service_type import ServiceTypeUseCase
 from app.application.use_cases.slots import SlotUseCase
@@ -62,8 +62,12 @@ def get_auth_use_case() -> AuthUseCase:
     return AuthUseCase(user_repo = get_user_repository(), file_repo=get_file_repository())
 
 
-def get_book_appointment_use_case() -> BookAppointmentUseCase:
-    return BookAppointmentUseCase(appointment_repo=get_appointment_repository())
+def get_appointment_use_case() -> AppointmentUseCase:
+    return AppointmentUseCase(
+        appointment_repo=get_appointment_repository(),
+        file_repo=get_file_repository(),
+        audit_repo=get_audit_logs_repository()
+    )
 
 def get_branch_use_case() -> BranchUseCase:
     return BranchUseCase(branch_repository=get_branch_repository())
