@@ -1,249 +1,186 @@
 # FlowCare (Queue & Appointment Booking System)
 
-Backend solution for Rihal Codestacker 2026.
-
-Production-grade starter for **FastAPI + Postgres** using **Clean Architecture / DDD-lite**.
-
-
-
-
-## Architecture (DDD-lite)
-
-- `app/domain/`: Pure business logic (entities, repository interfaces, domain errors)
-- `app/application/`: Use-cases (orchestrates domain + ports)
-- `app/infrastructure/`: Adapters (DB models, repository implementations, external services)
-- `app/api/`: FastAPI routers + schemas (delivery layer)
-- `app/core/`: Cross-cutting concerns (settings, logging, DB session)
-
-
-## Current Problems
-1. **Broken imports** - `appointment.py` controller imports `AppointmentRepository` from use_cases (wrong)
-2. **Typos everywhere** - `appoinment` vs `appointment`, `excute` vs `execute`
-3. **SOLID violations**:
-   - Use cases instantiate their own repos (violates DIP)
-   - Use cases import FastAPI HTTPException (violates SRP - domain leaking into framework)
-   - Schemas mixed with DTOs
-   - No proper dependency injection
-4. **Layer bleeding** - Application layer imports API schemas, Infra layer raises HTTP exceptions
-5. **Duplicate Base class** in `db/base.py` and `db/session.py`
-6. **Dead code** - `dependencies.py` references undefined symbols, commented out exception handlers
-7. **No `__init__.py`** files in many packages
-
-
-
-```
-app/
-├── __init__.py
-├── main.py                          # FastAPI app creation
-├── config.py                        # Settings (unchanged)
-│
-├── domain/                          # LAYER 1: Enterprise Business Rules
-│   ├── __init__.py
-│   ├── entities/                    # Pure domain objects
-│   │   ├── __init__.py
-│   │   ├── user.py
-│   │   └── appointment.py
-│   ├── exceptions.py                # Domain-level exceptions
-│   └── interfaces/                  # Abstract repository contracts (ISP)
-│       ├── __init__.py
-│       ├── user_repository.py
-│       └── appointment_repository.py
-│
-├── application/                     # LAYER 2: Application Business Rules
-│   ├── __init__.py
-│   ├── dtos/                        # Data Transfer Objects
-│   │   ├── __init__.py
-│   │   ├── auth_dto.py
-│   │   └── appointment_dto.py
-│   └── use_cases/                   # Use cases (SRP - one class per use case)
-│       ├── __init__.py
-│       ├── register_user.py
-│       ├── login_user.py
-│       ├── logout_user.py
-│       └── book_appointment.py
-│
-├── infrastructure/                  # LAYER 3: Frameworks & Drivers
-│   ├── __init__.py
-│   ├── database/
-│   │   ├── __init__.py
-│   │   ├── base.py                  # Single Base class
-│   │   ├── session.py               # Engine + session factory
-│   │   └── connection.py            # Health check
-│   ├── models/                      # SQLAlchemy ORM models
-│   │   ├── __init__.py
-│   │   ├── user_model.py
-│   │   ├── role_model.py
-│   │   ├── appointment_model.py
-│   │   ├── branch_model.py
-│   │   ├── slot_model.py
-│   │   ├── service_type_model.py
-│   │   ├── staff_profile_model.py
-│   │   ├── staff_service_type_model.py
-│   │   ├── customer_profile_model.py
-│   │   └── audit_log_model.py
-│   ├── repositories/                # Concrete implementations (DIP)
-│   │   ├── __init__.py
-│   │   ├── user_repository_impl.py
-│   │   └── appointment_repository_impl.py
-│   └── security/
-│       ├── __init__.py
-│       ├── hashing.py               # Password hashing (SRP)
-│       ├── jwt_handler.py           # JWT create/decode (SRP)
-│       └── token_utils.py           # Token hashing
-│
-└── api/                             # LAYER 4: Interface Adapters
-    ├── __init__.py
-    ├── dependencies.py              # DI container - repo factories
-    ├── middleware/
-    │   ├── __init__.py
-    │   ├── exception_handlers.py
-    │   └── rbac.py
-    └── v1/
-        ├── __init__.py
-        ├── router.py                # All route aggregation
-        ├── schemas/                  # Request/Response schemas
-        │   ├── __init__.py
-        │   ├── user_schemas.py
-        │   ├── auth_schemas.py
-        │   └── appointment_schemas.py
-        └── endpoints/               # Route handlers (thin controllers)
-            ├── __init__.py
-            ├── health.py
-            ├── auth.py
-            └── appointment.py
-```
-
-## SOLID Principles Applied
-- **S** - Each use case is a single class with a single `execute()` method
-- **O** - Repository interfaces allow extension without modification
-- **L** - All repository implementations are substitutable for their interfaces
-- **I** - Separate repository interfaces per domain concept
-- **D** - Use cases depend on abstractions (interfaces), not implementations
-
-
-## Tech Stack
-
-| Layer | Technology |
-|-------|-----------|
-| Framework | FastAPI 0.111 |
-| ORM | SQLAlchemy 2.0 (async) |
-| Database | PostgreSQL 16 |
-| Migrations | Alembic |
-| Auth | HTTP Basic Auth + Passlib/bcrypt |
-| File Storage | Local filesystem (MinIO-ready) |
-| Background Jobs | APScheduler (cron) |
-| Containerisation | Docker + docker-compose |
-| Testing | pytest + httpx |
+Backend solution for FlowCare — a production-grade **FastAPI + Postgres** system using **Clean Architecture / DDD-lite**.
 
 ---
 
-## Setup Instructions
-### Option A: Docker (Recommended)
+## 🚀 Tech Stack
 
-**Prerequisites:** Docker Desktop or Docker Engine + docker-compose
+- **Framework:** FastAPI
+- **ORM:** SQLAlchemy 2.0 (Async)
+- **Database:** PostgreSQL 16
+- **Migrations:** Alembic
+- **Storage:** MinIO (compatible with S3)
+- **Background Jobs:** APScheduler
+- **Containerization:** Docker & Docker Compose
 
-## Quick start (local)
+---
 
-1) Create env file:
+## 🏗️ Architecture (Clean Architecture)
 
-```bash
-# 1. Clone the repository
-git clone https://github.com/your-username/flowcare-backend.git
-cd flowcare-backend
+- `app/domain/`: Pure business logic (Entities, Repository Interfaces, Domain Errors).
+- `app/application/`: Application logic (Use Cases, DTOs).
+- `app/infrastructure/`: Outside world (DB Models, Repository Implementations, Security, Utilities).
+- `app/api/`: Interface Adapters (FastAPI Routes, Pydantic Schemas, Middleware).
 
-# 2. Copy and configure environment
-cp .env.example .env
-# Edit .env if needed (defaults work out-of-the-box with Docker)
+---
 
-# 3. Start all services
-docker-compose up --build
+## 🛠️ Setup Instructions
 
-# API is now running at:
-#   http://localhost:8000
-#   Swagger UI: http://localhost:8000/docs
-#   ReDoc:      http://localhost:8000/redoc
-#   MinIO UI:   http://localhost:9001
-```
+### Option 1: Docker (Recommended)
 
+1. **Clone the repository:**
+   ```bash
+   git clone https://github.com/Source-C0de/FlowCare_Backend.git
+   cd FlowCare_Backend
+   ```
 
-### Option B: Local Development
+2. **Configure Environment:**
+   ```bash
+   cp .env.example .env
+   # IMPORTANT: When using Docker, set:
+   # DB_HOST=postgres-db
+   # MINIO_ENDPOINT=minio:9000
+   ```
 
-**Prerequisites:** Python 3.12+, PostgreSQL 16
+3. **Start Services:**
+   ```bash
+   make up
+   # or
+   docker compose up --build
+   ```
 
-```bash
-# 1. Clone and enter project
-git clone https://github.com/your-username/flowcare-backend.git
-cd flowcare-backend
+### Option 2: Local Development
 
-# 2. Create virtual environment
-python3.11 -m venv venv
-source venv/bin/activate        # Windows: venv\Scripts\activate
+1. **Create Virtual Environment:**
+   ```bash
+   python3.11 -m venv venv
+   source venv/bin/activate
+   ```
 
-# 3. Install dependencies
-make install 
-    or
-pip install -r requirements.txt
+2. **Install Dependencies:**
+   ```bash
+   make install
+   ```
 
-# 4. Start PostgreSQL and create database
-psql -U postgres -c "CREATE USER flowcare WITH PASSWORD 'flowcare123';"
-psql -U postgres -c "CREATE DATABASE flowcare_db OWNER flowcare;"
+3. **Database Setup:**
+   Ensure PostgreSQL is running and create the database:
+   ```bash
+   psql -U postgres -c "CREATE DATABASE flowcare_db;"
+   ```
 
-# 5. Configure environment
-cp .env.example .env
-# Update DATABASE_URL in .env if your credentials differ
+4. **Run Migrations:**
+   ```bash
+   make upgrade
+   ```
 
-# 6. Run migrations
-alembic upgrade head
+5. **Start Dev Server:**
+   ```bash
+   make dev
+   ```
 
-# 7. Start the server
-uvicorn main:app --reload --port 8000
-```
+---
 
+## 🔑 Environment Variables
 
+Create a `.env` file in the root directory:
 
-## Database Migrations
+```env
+# Database
+DB_HOST=localhost
+DB_PORT=5432
+DB_USER=postgres
+DB_PASSWORD=postgres
+DB_NAME=flowcare_db
 
-```bash
-# Apply all migrations
-alembic upgrade head
+# Security
+JWT_SECRET_KEY=your_super_secret_key
+ACCESS_TOKEN_EXPIRE_MINUTES=60
 
-# Create a new migration (after model changes)
-alembic revision --autogenerate -m "description"
+# Role IDs (Matching database seed)
+ADMIN=1
+BRANCH_MANAGER=2
+STAFF=3
+CUSTOMER=4
 
-# Rollback one step
-alembic downgrade -1
-
-# View current revision
-alembic current
+# MinIO Storage
+MINIO_ENDPOINT=localhost:9000
+MINIO_ACCESS_KEY=minioadmin
+MINIO_SECRET_KEY=minioadmin
+MINIO_BUCKET_NAME=flowcare
+MINIO_REGION=us-east-1
+MINIO_SECURE=False
 ```
 
 ---
 
+## 🧬 Database & Seeding
 
-cp .env.dev .env
-```
+### Migrations
+- **Create Migration:** `make migration msg="feat_add_new_table"`
+- **Apply Migration:** `make upgrade`
+- **Rollback:** `make downgrade`
 
-2) Run Postgres + API:
+### Seeding Data
+We provide scripts to populate the database with roles, branches, service types, and initial staff:
 
+1. **Seed Core Data (Roles, Branches, Services, Staff):**
+   ```bash
+   export PYTHONPATH=.
+   ./venv/bin/python3 scripts/seed_db.py
+   ```
+
+2. **Seed Appointment Slots:**
+   ```bash
+   ./venv/bin/python3 seed/seed_slots.py
+   ```
+
+---
+
+## 📡 API Examples
+
+### 1. Register a Customer
 ```bash
-docker compose up --build
+curl -X POST http://localhost:8000/api/v1/auth/register \
+  -H "Content-Type: multipart/form-data" \
+  -F "email=customer@example.com" \
+  -F "password=Password123" \
+  -F "phone=+96812345678" \
+  -F "id_image=@/path/to/your/id.jpg"
 ```
 
-API:
-- `GET /api/v1/health`
-- Docs at `/docs`
-
-## Dev setup (without Docker)
+### 2. Login
 ```bash
-python -m venv .venv
-source .venv/bin/activate
-pip install -r requirements.txt
-uvicorn app.main:app --factory --reload
+curl -X POST http://localhost:8000/api/v1/auth/login \
+  -H "Content-Type: application/json" \
+  -d '{
+    "email": "customer@example.com",
+    "password": "Password123"
+  }'
 ```
 
-## Migrations
-
+### 3. Assign Service to Staff (Admin/Manager)
 ```bash
-alembic upgrade head
+curl -X POST http://localhost:8000/api/v1/staff/{staff_id}/assign-service \
+  -H "Authorization: Bearer <your_token>" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "service_type_id": "service_uuid_here"
+  }'
 ```
-# FlowCare_Backend
+
+### 4. Create Appointment
+```bash
+curl -X POST http://localhost:8000/api/v1/appointment/create \
+  -H "Authorization: Bearer <your_token>" \
+  -H "Content-Type: multipart/form-data" \
+  -F "branch_id=muscat-central" \
+  -F "service_type_id=muscat-gen-cons" \
+  -F "slot_id=slot_muscat-central_20240318_0900"
+```
+
+---
+
+## 📖 Documentation
+- **Swagger UI:** [http://localhost:8000/docs](http://localhost:8000/docs)
+- **ReDoc:** [http://localhost:8000/redoc](http://localhost:8000/redoc)
