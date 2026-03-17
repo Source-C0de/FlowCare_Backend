@@ -21,8 +21,6 @@ async def get_me(
     return current_user
 
 
-
-
 @router.patch("/update-profile", response_model=UserPublic, status_code=status.HTTP_200_OK)
 async def update_user(
     request: UpdateUserRequest,
@@ -30,3 +28,5 @@ async def update_user(
 ):
     
     return current_user
+
+

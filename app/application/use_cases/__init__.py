@@ -14,6 +14,7 @@ from .service_type import *
 from .slots import *
 from .audit_logs import *
 from .appointment import *
+from .staff import *
 
 
 
@@ -23,6 +24,7 @@ __all__ = (
     service_type.__all__ +
     slots.__all__ +
     audit_logs.__all__ +
-    appointment.__all__
+    appointment.__all__ +
+    staff.__all__
 )
 

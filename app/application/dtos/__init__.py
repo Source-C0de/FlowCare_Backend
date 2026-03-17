@@ -9,6 +9,7 @@ from . import slot_dto
 from . import branch_dto
 from . import audit_dto
 from . import common_dto
+from . import staff_dto
 
 from .auth_dto import *
 from .appointment_dto import *
@@ -17,6 +18,7 @@ from .slot_dto import *
 from .branch_dto import *
 from .audit_dto import *
 from .common_dto import *
+from .staff_dto import *
 
 # __all__ = [
 #     # "UserRegisterDTO", 
@@ -34,5 +36,6 @@ __all__ = (
     slot_dto.__all__ +
     branch_dto.__all__ +
     audit_dto.__all__ +
-    common_dto.__all__
+    common_dto.__all__ +
+    staff_dto.__all__
 )

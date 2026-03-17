@@ -6,6 +6,7 @@ from .service_type_schemas import *
 from .slot_schemas import *
 from .audit_shcemas import *
 from .common import *
+from .staff_schemas import *
 
 # from . import user_schemas
 # from . import auth_schemas
@@ -23,5 +24,6 @@ __all__ = (
     service_type_schemas.__all__ +
     slot_schemas.__all__ +
     audit_shcemas.__all__ +
-    common.__all__
+    common.__all__ +
+    staff_schemas.__all__
 )

@@ -7,7 +7,11 @@ from app.infrastructure.utils.pagination import PaginationRequest
 
 T = TypeVar("T")
 
+from pydantic import ConfigDict
+
 class PaginationResponse(BaseModel, Generic[T]):
+    model_config = ConfigDict(from_attributes=True)
+    
     data: list[T]
     total: int
     page: int

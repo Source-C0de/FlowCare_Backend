@@ -7,6 +7,8 @@ class PaginationRequest(BaseModel):
     page: int = Field(1, ge=1, description="Page number (starts from 1)")
     limit: int = Field(10, ge=1, le=100, description="Items per page")
     term: Optional[str] = Field(None, description="Search keyword")
+    branch_id: Optional[str] = Query(None, description="Branch ID to filter by")
+
 
     @property
     def offset(self) -> int:

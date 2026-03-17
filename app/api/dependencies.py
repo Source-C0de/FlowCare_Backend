@@ -13,6 +13,7 @@ from app.domain.interfaces.service_type_repository import ServiceTypeRepository
 from app.domain.interfaces.slot_repository import SlotRepository
 from app.domain.interfaces.audit_logs_repository import AuditLogsRepository
 from app.domain.interfaces.file_repository import FileRepository
+from app.domain.interfaces.staff_repository import StaffRepository
 
 
 from app.infrastructure.repositories.user_repository_impl import UserRepositoryImpl
@@ -22,6 +23,7 @@ from app.infrastructure.repositories.service_type_repository_impl import Service
 from app.infrastructure.repositories.slot_repository_impl import SlotRepositoryImpl
 from app.infrastructure.repositories.audit_logs_repository_impl import AuditLogsRepositoryImpl
 from app.infrastructure.repositories.file_repository_impl import FileRepositoryImpl
+from app.infrastructure.repositories.staff_repository_impl import StaffRepositoryImpl
 
 from app.application.use_cases.auth import AuthUseCase
 from app.application.use_cases.appointment import AppointmentUseCase
@@ -29,6 +31,7 @@ from app.application.use_cases.branch import BranchUseCase
 from app.application.use_cases.service_type import ServiceTypeUseCase
 from app.application.use_cases.slots import SlotUseCase
 from app.application.use_cases.audit_logs import AuditLogsUseCase
+from app.application.use_cases.staff import StaffUseCase
 
 
 # ── Repository factories ──────────────────────────────────────
@@ -55,6 +58,8 @@ def get_audit_logs_repository() -> AuditLogsRepository:
 def get_file_repository() -> FileRepository:
     return FileRepositoryImpl()
 
+def get_staff_repository() -> StaffRepository:
+    return StaffRepositoryImpl()
 
 # ── Use-case factories ────────────────────────────────────────
 
@@ -83,6 +88,15 @@ def get_slot_use_case() -> SlotUseCase:
 
 def get_audit_use_case() -> AuditLogsUseCase:
     return AuditLogsUseCase(audit_logs_repo=get_audit_logs_repository())
+
+
+def get_staff_use_case() -> StaffUseCase:
+    return StaffUseCase(
+        user_repo=get_user_repository(),
+        staff_repo=get_staff_repository(),
+        file_repo=get_file_repository(),
+        audit_repo=get_audit_logs_repository()
+    )
 
 
 
