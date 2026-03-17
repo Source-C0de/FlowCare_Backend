@@ -4,11 +4,12 @@ from abc import ABC, abstractmethod
 from typing import Optional
 
 from app.domain.entities.branch import Branch
+from app.application.dtos import PaginationDTO, UpdateBranchDTO
 # from app.infrastructure.repositories.branch_repository_impl import BranchRepositoryImpl
 
 class BranchRepository(ABC):
     @abstractmethod
-    async def save_branch(self, branch: Branch) -> None:
+    async def save_branch(self, public_id: str, branch: Branch) -> None:
         ...
 
     @abstractmethod
@@ -20,11 +21,11 @@ class BranchRepository(ABC):
         pass
 
     @abstractmethod
-    async def find_all(self) -> list[Branch]:
+    async def find_all(self, pagination: PaginationDTO) -> list[Branch]:
         ...
 
     @abstractmethod
-    async def update_branch(self, branch: Branch) -> None:
+    async def update_branch(self, branch_id: str, request: UpdateBranchDTO) -> None:
         ...
 
     @abstractmethod
@@ -34,3 +35,7 @@ class BranchRepository(ABC):
     @abstractmethod
     async def count_by_city(self, city: str) -> int:
         ...
+
+    @abstractmethod
+    async def find_by_phone(self, phone: str) -> bool:
+        pass

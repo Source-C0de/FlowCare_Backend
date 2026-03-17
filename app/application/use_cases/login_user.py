@@ -14,13 +14,15 @@ from app.infrastructure.security.jwt_handler import (
 )
 
 
+from app.application.dtos.auth_dto import UserLoginDTO
+
 class LoginUserUseCase:
     """Orchestrates user login — verifies credentials, produces tokens."""
 
     def __init__(self, user_repo: UserRepository) -> None:
         self._repo = user_repo
 
-    async def execute(self, email: str, password: str) -> Tuple[User, str, str, str]:
+    async def execute(self, dto: UserLoginDTO) -> Tuple[User, str, str, str]:
         """
         Returns
         -------
@@ -31,12 +33,12 @@ class LoginUserUseCase:
         UnauthorizedException  – bad credentials or user not found
         ForbiddenException     – account inactive
         """
-        user = await self._repo.get_email_with_role(email)
+        user = await self._repo.get_email_with_role(dto.email)
 
         if user is None:
             raise UnauthorizedException("Invalid credentials")
 
-        if not verify_password(password, user.hashed_password):
+        if not verify_password(dto.password, user.password_hash):
             raise UnauthorizedException("Invalid credentials")
 
         if not user.is_active:
@@ -49,3 +51,9 @@ class LoginUserUseCase:
         refresh_token, family_id = create_refresh_token(subject=str(user.id))
 
         return user, access_token, refresh_token, family_id
+
+
+
+__all__ = [
+    "LoginUserUseCase"
+]

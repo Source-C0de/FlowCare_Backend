@@ -15,8 +15,28 @@ from app.domain.exceptions import (
 )
 
 
+from fastapi.exceptions import RequestValidationError
+from fastapi.encoders import jsonable_encoder
+
 def add_exception_handlers(app: FastAPI) -> None:
     """Register domain → HTTP exception mappers."""
+
+    @app.exception_handler(RequestValidationError)
+    async def validation_exception_handler(request: Request, exc: RequestValidationError):
+        # Filter out binary data from errors to avoid UnicodeDecodeError in jsonable_encoder
+        errors = []
+        for error in exc.errors():
+            # Pydantic v2 might include the input value in the error
+            # If it's bytes, we want to skip it or stringify it safely
+            if "input" in error and isinstance(error["input"], bytes):
+                error = error.copy()
+                error["input"] = "<binary data>"
+            errors.append(error)
+            
+        return JSONResponse(
+            status_code=422,
+            content=jsonable_encoder({"detail": errors}),
+        )
 
     @app.exception_handler(NotFoundException)
     async def not_found_handler(request: Request, exc: NotFoundException):

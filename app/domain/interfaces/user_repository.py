@@ -16,6 +16,10 @@ class UserRepository(ABC):
         ...
 
     @abstractmethod
+    async def save_staff(self, user: User) -> None:
+        ...
+
+    @abstractmethod
     async def save_customer_profile(self, profile: CustomerProfile) -> Optional[CustomerProfile]:
         ...
 
@@ -26,3 +30,11 @@ class UserRepository(ABC):
     @abstractmethod
     async def get_email_with_role(self, email: str) -> Optional[User]:
         ...
+    @abstractmethod
+    async def find_by_username(self, username: str) -> bool:
+        ...
+
+    @abstractmethod
+    async def find_by_branch_id(self, branch_id: str) -> bool:
+        ...
+    

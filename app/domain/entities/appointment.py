@@ -1,16 +1,24 @@
-"""Pure domain entity for appointments."""
-
-from __future__ import annotations
-
-from app.common import datetime,Optional, dataclass
+import enum
+from app.common import datetime, Optional, dataclass
 from uuid import UUID
+
+
+
+class AppointmentStatus(enum.Enum):
+    BOOKED = "BOOKED"
+    CHECKED_IN = "CHECKED_IN"
+    NO_SHOW = "NO_SHOW"
+    COMPLETED = "COMPLETED"
+    CANCELLED = "CANCELLED"
 
 @dataclass
 class Appointment:
     id: UUID
-    branch_id: UUID
-    service_type_id: UUID
-    staff_id: UUID
-    start_time: datetime
-    end_time: datetime
-    is_active: bool = True
+    appoinment_no: str
+    customer_id: UUID
+    branch_id: str
+    service_type_id: Optional[str] = None
+    slot_id: Optional[str] = None
+    staff_id: Optional[str] = None
+    status: AppointmentStatus = AppointmentStatus.BOOKED
+    attachment_path: Optional[str] = None

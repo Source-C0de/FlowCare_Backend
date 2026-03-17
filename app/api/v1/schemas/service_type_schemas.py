@@ -1,32 +1,28 @@
 from __future__ import annotations
 
-from app.common import BaseModel
+from pydantic import ConfigDict
+from app.common import BaseModel, Optional, datetime
 
 class ServiceType(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
     id: str
     branch_id: str
     name: str
     description: str
-    duration: int
-    is_active: bool
-    created_at: str
-    updated_at: str
+    duration_minutes: int
+    created_at: Optional[datetime] = None
+    updated_at: Optional[datetime] = None
 
 
-class CreateServiceTypeRequest(BaseModel):
+class ServiceTypeRequest(BaseModel):
     name: str
-    branch_id: str 
-    description: str
+    description: Optional[str] = None
     duration_minutes: int
 
 
-
-from typing import Optional
-
 class UpdateServiceTypeRequest(BaseModel):
-    id: Optional[str] = None
     name: Optional[str] = None
-    branch_id: Optional[str] = None
     description: Optional[str] = None
     duration_minutes: Optional[int] = None
     is_active: Optional[bool] = None
@@ -78,3 +74,19 @@ class ServiceTypeResponse(BaseModel):
     status: str
     message: str
     data: ServiceType
+
+
+__all__ = [
+    "ServiceType",
+    "ServiceTypeRequest",
+    "UpdateServiceTypeRequest",
+    "DeleteServiceTypeRequest",
+    "GetServiceTypeRequest",
+    "GetServiceTypesRequest",
+    "CreateServiceTypeResponse",
+    "UpdateServiceTypeResponse",
+    "DeleteServiceTypeResponse",
+    "GetServiceTypeResponse",
+    "GetServiceTypesResponse",
+    "ServiceTypeResponse",
+]

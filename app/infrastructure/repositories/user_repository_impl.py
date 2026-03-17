@@ -16,7 +16,9 @@ from app.infrastructure.database.session import AsyncSessionLocal
 from app.infrastructure.models.customer_profile_model import CustomerProfile as CustomerProfileModel
 from app.infrastructure.models.role_model import Role
 from app.infrastructure.models.user_model import User as UserModel
-
+from app.infrastructure.models.staff_profile_model import StaffProfile as StaffProfileModel
+from asyncpg.exceptions import UniqueViolationError, ForeignKeyViolationError
+from app.infrastructure.models.branch_model import Branch as BranchModel
 
 class UserRepositoryImpl(UserRepository):
     """SQLAlchemy async implementation of UserRepository."""
@@ -29,8 +31,13 @@ class UserRepositoryImpl(UserRepository):
                     password_hash=user.hashed_password,
                     role_id=settings.CUSTOMER,
                     phone=user.phone,
+                    is_active=True,
+                    is_verified=False,
                 )
-                profile = CustomerProfileModel(customer_email=user.email)
+                profile = CustomerProfileModel(
+                    customer_email=user.email,
+                    id_image_path=user.id_image_path
+                )
                 session.add(model)
                 session.add(profile)
                 await session.commit()
@@ -44,6 +51,41 @@ class UserRepositoryImpl(UserRepository):
     async def save_customer_profile(self, profile: CustomerProfile) -> Optional[CustomerProfile]:
         # TODO: implement when needed
         return None
+
+
+    async def save_staff(self, user: User) -> None:
+        async with AsyncSessionLocal() as session:
+            try:
+                model = UserModel(
+                    email=user.email,
+                    password_hash=user.hashed_password,
+                    role_id=settings.STAFF if user.role_type=="STAFF" else settings.BRANCH_MANAGER,
+                    phone=user.phone,
+                    is_verified=True,
+                    is_active=True,
+                )
+                session.add(model)
+                await session.flush()
+
+                profile = StaffProfileModel(
+                    user_id=model.id,
+                    username=user.username,
+                    full_name=user.full_name,
+                    branch_id=user.branch_id,
+                    role=user.role_type,
+                    is_active=True,
+                )
+                session.add(profile)
+                await session.commit()
+                await session.refresh(model)
+                await session.refresh(profile)
+            except IntegrityError:
+                await session.rollback()
+                raise ConflictException("Staff with this email or username already exists")
+            except Exception as exc:
+                await session.rollback()
+                # Log the actual exception 'exc' here for debugging
+                raise DomainException(str(exc))
 
     async def find_by_email(self, email: str) -> Optional[User]:
         async with AsyncSessionLocal() as session:
@@ -83,3 +125,22 @@ class UserRepositoryImpl(UserRepository):
                 role_type=role_type,
                 is_active=user_model.is_active,
             )
+    async def find_by_username(self, username: str) -> bool:
+        async with AsyncSessionLocal() as session:
+            result = await session.execute(
+                select(StaffProfileModel).where(StaffProfileModel.username == username)
+            )
+            row = result.scalars().first()
+            if row is None:
+                return False
+            return True
+
+    async def find_by_branch_id(self, branch_id: str) -> bool:
+        async with AsyncSessionLocal() as session:
+            result = await session.execute(
+                select(BranchModel).where(BranchModel.id == branch_id)
+            )
+            row = result.scalars().first()
+            if row is None:
+                return False
+            return True

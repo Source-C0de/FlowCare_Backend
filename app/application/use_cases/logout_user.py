@@ -13,3 +13,9 @@ class LogoutUserUseCase:
             return
         _token_hash = hash_token(refresh_token)
         # TODO: persist revocation to a token blacklist table
+
+
+
+__all__ = [
+    "LogoutUserUseCase"
+]

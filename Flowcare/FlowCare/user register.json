@@ -1,0 +1,21 @@
+{
+  "name": "user register",
+  "rank": "az",
+  "request": {
+    "type": "http",
+    "url": "{{url}}auth/register",
+    "scripts": {
+      "preRequest": "",
+      "postResponse": ""
+    },
+    "method": "POST",
+    "queryParams": [],
+    "headers": [],
+    "body": [],
+    "contentType": "multipart/form-data",
+    "auth": {
+      "currentAuthType": "INHERIT",
+      "authConfigStore": {}
+    }
+  }
+}

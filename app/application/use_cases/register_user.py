@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from uuid import uuid4
 
-from app.application.dtos.auth_dto import CustomerRegisterDTO
+from app.application.dtos.auth_dto import UserRegisterDTO
 from app.domain.entities.user import User
 from app.domain.exceptions import ConflictException
 from app.domain.interfaces.user_repository import UserRepository
@@ -12,12 +12,12 @@ from app.infrastructure.security.hashing import hash_password
 
 
 class RegisterUserUseCase:
-    """Orchestrates customer registration."""
+    """Orchestrates user registration."""
 
     def __init__(self, user_repo: UserRepository) -> None:
         self._repo = user_repo
 
-    async def execute(self, dto: CustomerRegisterDTO) -> User:
+    async def execute(self, dto: UserRegisterDTO) -> User:
         existing = await self._repo.find_by_email(dto.email)
         if existing is not None:
             raise ConflictException("Email already registered")
@@ -33,3 +33,9 @@ class RegisterUserUseCase:
 
         await self._repo.save_user(user)
         return user
+
+
+
+__all__ = [
+    "RegisterUserUseCase"
+]

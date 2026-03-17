@@ -12,9 +12,9 @@ class SlotUseCase:
     def __init__(self, slot_repository: SlotRepository):
         self.slot_repository = slot_repository
 
-    async def get_slots(self, slot: GetSlotsRequest): 
+    async def get_slots(self, request: PaginationRequest, branch_id: str, service_type_id: str, date_filter: Optional[str] = None): 
         try:
-            return await self.slot_repository.get_slots(slot)
+            return await self.slot_repository.get_slots(request, branch_id, service_type_id, date_filter)
         except Exception as e:
             raise DomainException(str(e))
         
@@ -58,3 +58,8 @@ class SlotUseCase:
         except Exception as e:
             raise DomainException(str(e))
 
+
+
+__all__ = [
+    "SlotUseCase"
+]

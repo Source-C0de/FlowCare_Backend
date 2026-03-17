@@ -1,21 +1,23 @@
 from __future__ import annotations
 
-from app.common import BaseModel,dataclass
+from app.common import dataclass, Dict, List
+from uuid import UUID
+import uuid
 
 @dataclass
-class AuditLogs:
-    id: int
+class AuditLog:
     action: str
-    entity: str
-    entity_id: str
-    user_id: str
-    timestamp: str
-    details: dict
+    actor_id: UUID
+    actor_role: str
+    entity_id: UUID
+    entity_type: str
+    branch_id: str | None
+    metadata: dict
 
 
 @dataclass
 class AuditLogsResponse:
-    data: list[AuditLogs]
+    data: List[AuditLog]
     total: int
     page: int
     limit: int
@@ -25,4 +27,4 @@ class AuditLogsResponse:
 class AuditLogsRequest:
     page: int
     limit: int
-    term: int | None
+    term: str | None

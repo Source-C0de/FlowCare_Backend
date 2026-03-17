@@ -1,0 +1,21 @@
+{
+  "name": "(Copy) Login",
+  "rank": "auu",
+  "request": {
+    "type": "http",
+    "url": "{{url}}auth/login",
+    "scripts": {
+      "preRequest": "// **********************************************\n// 🛠️ Learn more about scripts and snippets: https://docs.requestly.com/general/api-client/scripts\n// **********************************************\nrequire pm\n\npm.request.headers.add({\n    key: \"Authorization\",\n    value: \"Bearer \" + pm.collectionVariables.get(\"access_token\")\n});",
+      "postResponse": "// **********************************************\n// 🛠️ Use JavaScript to visualize responses: https://docs.requestly.com/general/api-client/scripts\n// **********************************************\nlet response = pm.response.json();\n\nif (response.access_token) {\n    pm.collectionVariables.set(\"access_token\", response.access_token);\n    console.log(\"Access token saved:\", response.access_token);\n}"
+    },
+    "method": "POST",
+    "queryParams": [],
+    "headers": [],
+    "body": "{\n  \"email\":\"admin@system.com\",\n  \"password\":\"Admin@123\"\n}",
+    "contentType": "application/json",
+    "auth": {
+      "currentAuthType": "INHERIT",
+      "authConfigStore": {}
+    }
+  }
+}

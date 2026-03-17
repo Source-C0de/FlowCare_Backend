@@ -8,31 +8,40 @@ from app.domain.exceptions import DomainException
 from sqlalchemy import insert,select,func,delete
 from app.infrastructure.models.slot_model import Slot as SlotModel
 from app.api.v1.schemas.slot_schemas import GetSlotsRequest
+from app.api.v1.schemas.slot_schemas import SlotResponse
+from sqlalchemy import cast, Date
+from datetime import datetime
+
 
 class SlotRepositoryImpl(SlotRepository):
-    async def get_slots(self, dto: GetSlotsRequest) -> list[Slot]:
+
+    def _to_entity(self, model: SlotModel) -> Slot:
+        return Slot(
+            id=model.id,
+            branch_id=model.branch_id,
+            service_type_id=model.service_type_id,
+            staff_id=model.staff_id,
+            start_time=model.start_time,
+            end_time=model.end_time,
+            is_booked=model.is_booked,
+            # capacity=model.capacity,
+            is_active=model.is_active
+        )
+    async def get_slots(self, request: PaginationRequest, branch_id: str, service_type_id: str, date_filter: Optional[str] = None) -> list[SlotResponse]:
         try:
             async with AsyncSessionLocal() as session:
-                result = await session.execute(
-                    select(SlotModel)
-                    .where(SlotModel.branch_id == dto.branch_id)
-                    .where(SlotModel.service_type_id == dto.service_type_id)
-                    .where(SlotModel.is_active == True)
+                query = select(SlotModel).where(
+                    SlotModel.branch_id == branch_id,
+                    SlotModel.service_type_id == service_type_id,
+                    SlotModel.is_booked == False,
+                    SlotModel.is_active == True,
+                    SlotModel.start_time > datetime.now()
                 )
+                if date_filter:
+                    query = query.where(cast(SlotModel.start_time, Date) == date_filter)
+                result = await session.execute(query)
                 models = result.scalars().all()
-                return [
-                    Slot(
-                        id=model.id,
-                        branch_id=model.branch_id,
-                        service_type_id=model.service_type_id,
-                        staff_id=model.staff_id,
-                        start_time=model.start_time,
-                        end_time=model.end_time,
-                        is_booked=model.is_booked,
-                        capacity=model.capacity,
-                        is_active=model.is_active
-                    ) for model in models
-                ]
+                return [self._to_entity(model) for model in models]
         except Exception as e:
             raise DomainException(str(e))
     

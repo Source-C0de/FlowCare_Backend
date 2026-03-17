@@ -1,9 +1,6 @@
 """Role ORM model."""
 
-from datetime import datetime, timezone
-
-from sqlalchemy import Column, DateTime, Integer, JSON, String
-
+from app.common import *
 from app.infrastructure.database.base import Base
 
 
