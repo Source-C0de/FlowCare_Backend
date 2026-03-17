@@ -14,6 +14,7 @@ class AuditLog(Base):
     actor_role = Column(String(50), nullable=False)
     entity_id = Column(SQL_UUID(as_uuid=True), nullable=False, index=True)
     entity_type = Column(String(50), nullable=False)
+    branch_id = Column(String(100),ForeignKey("branches.id"), nullable=True)
     log_metadata = Column("metadata", JSONB, nullable=True)
 
     @hybrid_property

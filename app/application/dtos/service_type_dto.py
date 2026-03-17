@@ -5,17 +5,16 @@ from typing import Optional
 
 @dataclass
 class ServiceTypeDTO:
-    name: Optional[str] | None
-    branch_id: Optional[str] | None
+    branch_id: str
+    name: str
     description: Optional[str] | None
-    duration_minutes: Optional[int] | None
-    is_active: Optional[bool] | None
+    duration_minutes: int
 
 @dataclass
 class ServiceTypeUpdateDTO:
-    id: Optional[str] | None
+    branch_id: str
+    service_type_id: str
     name: Optional[str] | None
-    branch_id: Optional[str] | None
     description: Optional[str] | None
     duration_minutes: Optional[int] | None
     is_active: Optional[bool] | None

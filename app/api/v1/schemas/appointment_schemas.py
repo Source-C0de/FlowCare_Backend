@@ -3,6 +3,7 @@
 from __future__ import annotations
 from app.common import *
 from fastapi import Form, File
+from app.domain.entities.appointment import AppointmentStatus
 
 
 class AppointmentDetails(BaseModel):
@@ -40,8 +41,17 @@ class CancelAppointmentResponse(BaseModel):
 
 
 class UpdateAppointmentRequest(BaseModel):
-    appointment_id: str
+    slot_id: str
 
+
+class UpdateAppointmentResponse(BaseModel):
+    status: str
+    message: str
+    data: AppointmentDetails
+
+class AppointmentStatusUpdate(BaseModel):
+    status: AppointmentStatus
+    notes: Optional[str] = None
 
 __all__ = [
     "AppointmentDetails",
@@ -50,4 +60,6 @@ __all__ = [
     "CancelAppointmentRequest",
     "CancelAppointmentResponse",
     "UpdateAppointmentRequest",
+    "UpdateAppointmentResponse",
+    "AppointmentStatusUpdate",
 ]

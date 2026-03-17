@@ -26,6 +26,7 @@ class AuditLogsRepositoryImpl(AuditLogsRepository):
                     actor_role=getattr(request, "actor_role", "unknown"),
                     entity_type=getattr(request, "entity_type", "unknown"),
                     entity_id=getattr(request, "entity_id", None),
+                    branch_id=getattr(request, "branch_id", None),
                     log_metadata=getattr(request, "metadata", None) or {},
                 )
                 session.add(lgo)
@@ -73,6 +74,7 @@ class AuditLogsRepositoryImpl(AuditLogsRepository):
                 actor_role=audit_log.actor_role,
                 entity_id=audit_log.entity_id,
                 entity_type=audit_log.entity_type,
+                branch_id=audit_log.branch_id,
                 log_metadata=audit_log.metadata,
             )
             session.add(model)

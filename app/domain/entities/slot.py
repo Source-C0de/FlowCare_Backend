@@ -11,4 +11,4 @@ class Slot(BaseModel):
     start_time: Optional[datetime] | None
     end_time: Optional[datetime] | None
     is_booked: Optional[bool] | None
-    capacity: Optional[int] | None
+    # capacity: Optional[int] | None

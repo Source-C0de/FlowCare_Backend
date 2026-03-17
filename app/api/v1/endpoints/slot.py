@@ -7,18 +7,31 @@ from app.application.use_cases import *
 from app.api.dependencies import get_slot_use_case
 from app.api.middleware.Rbac import require_roles
 from app.domain.entities.user import User
+from fastapi import Query
 
 
 
 router = APIRouter(prefix="/slots", tags=["Slots"])
 
-@router.get("/")
+@router.get(
+    "/{branch_id}", 
+    response_model=PaginationResponse[SlotResponse],
+    status_code=status.HTTP_200_OK
+)
 async def get_slots(
-    request: GetSlotsRequest = Depends(),
+    branch_id: str,
+    service_type_id: str = Query(...),
+    date_filter: Optional[str] = Query(None),
+    request: PaginationRequest = Depends(PaginationRequest),
     use_case: SlotUseCase = Depends(get_slot_use_case)
 ):
-    result = await use_case.get_slots(request)
-    return {"message": "Slots fatched successfully", "data": result}
+    result = await use_case.get_slots(request, branch_id, service_type_id, date_filter)
+    return PaginationResponse(
+        data=result,
+        total=len(result),
+        page=request.page,
+        limit=request.limit,
+    )
 
 
 @router.post("/",status_code=status.HTTP_201_CREATED)

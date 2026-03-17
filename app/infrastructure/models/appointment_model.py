@@ -4,6 +4,7 @@ from app.common import *
 from sqlalchemy import Enum
 from app.infrastructure.database.base import Base
 from app.domain.entities.appointment import AppointmentStatus
+
 class Appointment(Base):
     __tablename__ = "appoinments"
 
@@ -20,6 +21,8 @@ class Appointment(Base):
         nullable=False
     )
     attachment_path = Column(String(500), nullable=True)
-    @hybrid_property
-    def formatted_id(self) -> str:
-        return f"appt_{self.id}"
+
+    
+    # @hybrid_property
+    # def formatted_id(self) -> str:
+    #     return f"appt_{self.id}"

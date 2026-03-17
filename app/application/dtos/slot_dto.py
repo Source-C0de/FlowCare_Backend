@@ -11,7 +11,7 @@ class SlotDTO:
     start_time: Optional[datetime]| None
     end_time: Optional[datetime]| None
     is_booked: Optional[bool] | None
-    capacity: Optional[int] | None
+    # capacity: Optional[int] | None
     is_active: Optional[bool] | None
 
 @dataclass
@@ -22,7 +22,7 @@ class SlotUpdateDTO:
     staff_id: Optional[str] | None
     start_time: Optional[datetime] | None
     end_time: Optional[datetime] | None
-    capacity: Optional[int] | None
+    # capacity: Optional[int] | None
     is_active: Optional[bool] | None
     is_booked: Optional[bool] | None
 

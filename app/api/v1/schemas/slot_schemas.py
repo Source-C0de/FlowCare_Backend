@@ -13,7 +13,7 @@ class CreateSlotRequest(BaseModel):
     staff_id: Optional[str] | None
     start_at: Optional[datetime] | None
     end_at: Optional[datetime] | None
-    capacity: Optional[int] | None
+    # capacity: Optional[int] | None
     is_active: Optional[bool] | None
     is_booked: Optional[bool] | None
 
@@ -24,16 +24,28 @@ class UpdateSlotRequest(BaseModel):
     staff_id: Optional[str] | None
     start_at: Optional[str] | None
     end_at: Optional[str] | None
-    capacity: Optional[int] | None
+    # capacity: Optional[int] | None
     is_active: Optional[bool] | None
 
 class DeleteSlotRequest(BaseModel):
     id: str
 
 
+class SlotResponse(BaseModel):
+    id: str
+    branch_id: str
+    service_type_id: str
+    staff_id: Optional[str] | None
+    start_at: Optional[datetime] | None
+    end_at: Optional[datetime] | None
+    # capacity: Optional[int] | None
+    is_active: Optional[bool] | None
+    is_booked: Optional[bool] | None
+
 __all__ = [
     "GetSlotsRequest",
     "CreateSlotRequest",
     "UpdateSlotRequest",
     "DeleteSlotRequest",
+    "SlotResponse",
 ]

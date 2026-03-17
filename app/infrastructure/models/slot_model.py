@@ -16,5 +16,4 @@ class Slot(Base):
     start_time = Column(DateTime, nullable=False)
     end_time = Column(DateTime, nullable=False)
     is_booked = Column(Boolean, nullable=False)
-    capacity = Column(Integer, nullable=False)
     is_active = Column(Boolean, nullable=False)

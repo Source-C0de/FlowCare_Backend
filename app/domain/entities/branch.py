@@ -10,4 +10,12 @@ class Branch:
     address: str
     phone: Optional[str]
     timezone: str
-    is_active: bool
+
+@dataclass
+class UpdateBranch:
+    name: Optional[str]
+    city: Optional[str]
+    address: Optional[str]
+    phone: Optional[str]
+    timezone: Optional[str]
+    is_active: Optional[bool]

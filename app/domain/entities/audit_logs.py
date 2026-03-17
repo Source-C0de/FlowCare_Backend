@@ -11,6 +11,7 @@ class AuditLog:
     actor_role: str
     entity_id: UUID
     entity_type: str
+    branch_id: str | None
     metadata: dict
 
 
