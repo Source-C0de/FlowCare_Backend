@@ -16,7 +16,7 @@ Guidelines:
 # =========================
 from typing import Optional, Any, Callable, List, Dict
 from abc import ABC, abstractmethod
-from datetime import datetime
+from datetime import datetime, timezone
 from dataclasses import dataclass
 import uuid
 from uuid import UUID
@@ -102,6 +102,7 @@ __all__ = [
 
     # datetime / uuid
     "datetime",
+    "timezone",
     "UUID",
     "uuid",
 
