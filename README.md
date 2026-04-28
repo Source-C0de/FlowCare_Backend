@@ -26,6 +26,22 @@
 - [API Documentation](#-api-documentation)
 - [Makefile Commands](#-makefile-commands)
 - [Project Structure](#-project-structure)
+- - [Overview](#-overview)
+- [Tech Stack](#-tech-stack)
+- [Architecture](#️-architecture)
+- [Prerequisites](#-prerequisites)
+- [Setup Instructions](#️-setup-instructions)
+  - [Option 1: Docker (Recommended)](#option-1-docker-recommended)
+  - [Option 2: Local Development](#option-2-local-development)
+- [Environment Variables](#-environment-variables)
+- [Database Migrations](#-database-migrations)
+- [Seeding the Database](#-seeding-the-database)
+- [Running Tests](#-running-tests)
+- [API Usage Examples](#-api-usage-examples)
+- [API Documentation](#-api-documentation)
+- [Makefile Commands](#-makefile-commands)
+- [Project Structure](#-project-structure)
+
 
 ---
 
